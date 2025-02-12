@@ -1,0 +1,27 @@
+{
+    "name": "dell/fnehousing",
+    "description": "Safe Peer-to-Peer Shelter Payment Wordpress Plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "LechTech",
+            "email": "info@lechtech.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "itsjavi/bootstrap-colorpicker": "*",
+        "chillerlan/php-qrcode": "v5.0.x-dev"
+    },
+	"autoload": {
+		"psr-4": {"Fnehousing\\": "./includes"}, 
+		"files": [
+					"includes/Base/CoreHelper.php", 
+					"includes/Database/StaticDBFunctions.php",
+				    "includes/base/LogsNotifications.php",
+					"includes/Email/Emails.php"
+				  ]
+	}
+	
+}
