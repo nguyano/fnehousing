@@ -97,7 +97,7 @@ class PublicEnqueue {
 		}
 		
 		wp_enqueue_script(
-			'glot-gmap-js', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAUYJEfeT6Wpv6LvpTIwKGReJClMprgDuU&callback=initMap&libraries=places', 
+			'glot-gmap-js', 'https://maps.googleapis.com/maps/api/js?key='.FNEHD_GOOGLE_MAP_API_KEY.'&callback=initMap&libraries=places', 
 			array('jquery'), // Dependencies (jQuery in this case)
 			null, // Version (null disables versioning)
 			true // Load script in the footer

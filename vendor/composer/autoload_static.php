@@ -9,7 +9,7 @@ class ComposerStaticInitb2f157f088c2abe2bfb4946eacb6bb33
     public static $files = array (
         '4ed2b9a4aa1ed2ccf40f67edf43f90a4' => __DIR__ . '/../..' . '/includes/Base/CoreHelper.php',
         '470f07edbf2f3946e593d6a3715d085c' => __DIR__ . '/../..' . '/includes/Database/StaticDBFunctions.php',
-        '77fc370956ed0d89fb5789917ded91fe' => __DIR__ . '/../..' . '/includes/base/LogsNotifications.php',
+        '77fc370956ed0d89fb5789917ded91fe' => __DIR__ . '/../..' . '/includes/Base/LogsNotifications.php',
         '76df1daefc23b652cda498cbf8b7374d' => __DIR__ . '/../..' . '/includes/Email/Emails.php',
     );
 

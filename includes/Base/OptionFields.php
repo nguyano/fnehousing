@@ -564,6 +564,21 @@ class OptionFields {
 				'icon'        =>  'clock',
 				'default'     =>  'weekly'
 			],
+			
+			//Google map
+			[
+				'id'          =>  'google_map_api_key',
+				'title'       =>  __("Google Map API key", "fnehousing"),
+				'callback'    =>  'textField',
+				'page'        =>  'fnehousing_google_map',
+				'section'     =>  'fnehd_google_map_settings',
+				'placeholder' =>  "",
+				'description' =>  __("Google Map API key for maps, places and geocoding", "fnehousing"),
+				'divclasses'  =>  'col-md-12 card shadow-lg p-3',
+				'icon'        =>  'key',
+				'default'     =>  ''
+			],
+			
             
             // Advanced Options
             [
@@ -665,6 +680,11 @@ class OptionFields {
 				'id'    => 'fnehd_dbbackup_settings',
 				'title' => __('Database Backup', 'fnehousing'),
 				'page'  => 'fnehousing_dbbackup'
+			],
+			[
+				'id'    => 'fnehd_google_map_settings',
+				'title' => __('Google Map Settings', 'fnehousing'),
+				'page'  => 'fnehousing_google_map'
 			],
 			[
 				'id'    => 'fnehd_advanced_settings',

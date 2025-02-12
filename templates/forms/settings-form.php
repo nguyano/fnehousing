@@ -40,6 +40,12 @@ $tabs = [
         'sections'  => ['dbbackup'],
         'icon'      => 'database'
     ],
+	[
+        'id'        => 'GoogleMapTab',
+        'title'     => __("Google Map", "fnehousing"),
+        'sections'  => ['google_map'],
+        'icon'      => 'map-marker-alt'
+    ],
     [
         'id'        => 'AdvancedTab',
         'title'     => __("Advanced", "fnehousing"),
