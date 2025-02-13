@@ -53,12 +53,21 @@ class UsersActions extends UsersDBManager {
     }
 	
 	
-    //Prevent backend access
+    // Prevent backend and wp-login.php access for non-logged-in users
 	public function redirectPublicTo404() {
-		if ( is_admin() && !is_user_logged_in() && !( defined('DOING_AJAX') && DOING_AJAX ) ) {
-			wp_redirect( home_url('/404') ); // Redirect to the 404 page URL
+		if (
+			(is_admin() || $this->isLoginPage()) && 
+			!is_user_logged_in() && 
+			!(defined('DOING_AJAX') && DOING_AJAX)
+		) {
+			wp_redirect(home_url('/404')); // Redirect to the 404 page
 			exit;
 		}
+	}
+
+	//detect wp-login.php access
+	private function isLoginPage() {
+		return in_array($GLOBALS['pagenow'], ['wp-login.php']);
 	}
 	
 		
