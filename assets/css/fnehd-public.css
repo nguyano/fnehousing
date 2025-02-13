@@ -1723,6 +1723,15 @@ color: #000;
 		font-size: 1.4em !important;
 	}
 	
+	.fnehd-hero-sm{
+		font-weight: bold;
+		font-size: 0.85em !important;
+	}
+	
+	.fnehd-hero-lg{
+		font-size: 1.6em !important;
+	}
+	
 	.fnehd-form-wrap .track-form-input-wrapper label {
 		margin-right: 0;
 	}
