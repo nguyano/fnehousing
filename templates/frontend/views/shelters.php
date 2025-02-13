@@ -36,21 +36,21 @@ if($front_role === 'shelter-manager'){ ?>
     <span id="fne-shelter-count" class="sm text-dark"><?php printf(__('%d results', 'fnehousing'), fnehd_shelter_count()); ?></span>
 </span>
 
-<div class="view-toggle flex justify-end mb-4">
-    <span class="pt-3 mr-3">
+<div class="view-toggle flex justify-end pt-3 mb-4">
+    <span class="pt-3 mr-3 d-none d-md-flex">
         <i title="<?php _e('Available shelters', 'fnehousing'); ?>" class="fa-solid text-success fnehd-nav-icon fa-house-circle-check"></i>
         <span class="sm"><?= fnehd_shelter_availability_count('Available'); ?></span>&nbsp;&nbsp;
         <i title="<?php _e('Not Available', 'fnehousing'); ?>" class="fa-solid text-danger fnehd-nav-icon fa-house-circle-xmark"></i>
         <span class="sm"><?= fnehd_shelter_availability_count('Unavailable'); ?></span>
     </span>
 
-	
+	<?php if(!wp_is_mobile()){ ?>
 	<select id="shelter-filter" class="form-select d-none d-md-flex pr-3 pl-4 border rounded">
 		<option value="all"><?php _e('All Shelters', 'fnehousing'); ?></option>
 		<option value="available"><?php _e('Available', 'fnehousing'); ?></option>
 		<option value="unavailable"><?php _e('Unavailable', 'fnehousing'); ?></option>
 	</select>
-
+    <?php } ?>
     <button id="fnehd-grid-view" class="view-btn active px-4 py-2 border bg-secondary text-white">
         <i class="fas fa-th"></i>
     </button>
@@ -60,7 +60,23 @@ if($front_role === 'shelter-manager'){ ?>
 	<button id="fnehd-table-view" class="view-btn px-4 py-2 border text-gray-700">
         <i class="fas fa-table"></i>
     </button>
+</div><br>
+
+<!-- Mobile -->
+<div class="flex mb-4 d-flex d-md-none">
+	<select id="shelter-filter" class="form-select pr-3 pl-4 border rounded w-50 p-2">
+		<option value="all"><?php _e('All Shelters', 'fnehousing'); ?></option>
+		<option value="available"><?php _e('Available', 'fnehousing'); ?></option>
+		<option value="unavailable"><?php _e('Unavailable', 'fnehousing'); ?></option>
+	</select>
+	<span class="pt-1 mr-3 ml-5">
+        <i title="<?php _e('Available shelters', 'fnehousing'); ?>" class="fa-solid text-success fnehd-nav-icon fa-house-circle-check"></i>
+        <span class="sm"><?= fnehd_shelter_availability_count('Available'); ?></span>&nbsp;&nbsp;
+        <i title="<?php _e('Not Available', 'fnehousing'); ?>" class="fa-solid text-danger fnehd-nav-icon fa-house-circle-xmark"></i>
+        <span class="sm"><?= fnehd_shelter_availability_count('Unavailable'); ?></span>
+    </span>
 </div>
+<!-- Mobile End -->
 
 <div id="fnehd-listing-wrapper" data-shelter-url="<?= $shelter_url; ?>">
     <div id="fnehd-housing-grid" class="pt-5 mb-4 grid-view">
