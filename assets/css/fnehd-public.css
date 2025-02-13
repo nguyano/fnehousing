@@ -1732,6 +1732,14 @@ color: #000;
 		font-size: 1.8em !important;
 	}
 	
+	.fnehd-text-sm{
+		font-size: 1em !important;
+	}
+	
+	.fnehd-shelter-title-bar{
+		font-size: 1.6em !important;
+	}
+	
 	.fnehd-form-wrap .track-form-input-wrapper label {
 		margin-right: 0;
 	}

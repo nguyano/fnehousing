@@ -50,9 +50,9 @@ $update_url = '#';
     </ol>
 </nav>
 
-<div class="row shadow-lg p-5">
+<div class="row shadow-lg <?= wp_is_mobile()? ' p-3' : ' p-5'?>">
     <!-- Main Content -->
-    <div class="fnehd-shelter-main-content border col-md-8 p-5">
+    <div class="fnehd-shelter-main-content border col-md-8<?= wp_is_mobile()? ' p-3' : ' p-5'?>">
         <!-- Title Bar -->
         <div class="mb-4 fnehd-shelter-title-bar">
             <?= $shelter['shelter_name']; ?> <i class="text-success fa fa-check-circle"></i>

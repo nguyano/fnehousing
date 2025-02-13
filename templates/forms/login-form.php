@@ -78,14 +78,14 @@ $login_fields = [
             <!-- Additional Options -->
             <div class="form-group d-md-flex">
                 <div class="w-50 text-left">
-                    <label class="fnehd-checkbox-wrap checkbox-primary mb-0">
+                    <label class="fnehd-text-sm fnehd-checkbox-wrap checkbox-primary mb-0">
                         <?= esc_html(__('Remember Me', 'fnehousing')); ?>
                         <input type="checkbox" name="remember" />
                         <span class="fnehd-checkbox-checkmark"></span>
                     </label>
                 </div>
                 <div class="w-50 text-md-right">
-                    <a class="text-danger" href="<?= add_query_arg(['endpoint' => 'send_password_reset_link'], home_url()); ?>">
+                    <a class="fnehd-text-sm text-danger" href="<?= add_query_arg(['endpoint' => 'send_password_reset_link'], home_url()); ?>">
                         <?= esc_html(__('Forgot Password', 'fnehousing')); ?>
                     </a>
                 </div>
