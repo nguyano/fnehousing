@@ -1719,6 +1719,10 @@ color: #000;
 		margin-left: -11%;
 	}
 	
+	.fnehd-h2-text{
+		font-size: 1.4em !important;
+	}
+	
 	.fnehd-form-wrap .track-form-input-wrapper label {
 		margin-right: 0;
 	}

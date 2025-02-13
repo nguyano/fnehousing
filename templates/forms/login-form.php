@@ -32,7 +32,7 @@ $login_fields = [
     <!-- Left Section -->
     <div class="fnehd-text-wrap fnehd-rounded-left text-center d-flex align-items-center shelter-md-last">
         <div class="text w-100">
-            <h2><?= esc_html(__('FNE at UCHealth ?', 'fnehousing')); ?></h2>
+            <h2 class="fnehd-h2-text"><?= esc_html(__('FNE at UCHealth ?', 'fnehousing')); ?></h2>
             <p class="text-light"><?= esc_html(__('Signup for your access to FNE Shelters!', 'fnehousing')); ?></p>
             <a href="<?= esc_url(add_query_arg(['endpoint' => 'user_signup'], fnehd_current_url())); ?>" 
                class="btn btn-white btn-round btn-outline-white">
