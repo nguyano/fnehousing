@@ -171,7 +171,8 @@ class AdminEnqueue {
 			.dark-edition .navbar.bg-dark .fnehd-top-nav-item .active .fa {color: #fff !important;}
 			#screen-options-wrap { width: 100% !important; }
 			.navbar .collapse .navbar-nav .nav-item .nav-link { font-size: .78rem; }
-			.footer { left: -0.5%; }";
+			.footer { left: -0.5%; }
+			@media (min-width: 1920px) { #navbarSupportedContent{ padding-left: 6.5% !important;} .navbar.navbar-transparent { left: 0; } }";
     }
 	
 	
