@@ -1,4 +1,8 @@
 <?php
+// Generate nonce values
+$create_nonce = wp_create_nonce('fnehd_shelter_nonce');
+$update_nonce = wp_create_nonce('fnehd_shelter_update_nonce');
+
 
 // Shelter Info Form Fields
 $fields = [
@@ -21,7 +25,7 @@ $fields = [
         'type' => 'hidden',
         'placeholder' => '',
         'div-class' => 'col-md-6',	
-        'callback' => wp_create_nonce('fnehd_shelter_nonce'),
+        'callback' => $create_nonce,
         'display' => false,
         'help-info' => '',
         'required' => false,
@@ -176,7 +180,7 @@ $fields = [
         "name" => "gallery",
         "type" => "gallery",
         "placeholder" => "",
-        "div-class" => "col-md-2",
+        "div-class" => "col-md-8",
         "callback" => "",
         "display" => true,
         "help-info" => "",
@@ -185,9 +189,9 @@ $fields = [
 
 ];
 
-if($form_type == "edit"){ //update ajax action field
-	$fields[0]['callback'] = 'fnehd_update_shelter'; 
-	$fields[1]['callback'] = wp_create_nonce('fnehd_shelter_update_nonce'); //update nonce for edit form
-	$fields[1]['name'] = 'update_nonce'; 
+if ($form_type === "edit") { 
+    $fields[0]['callback'] = 'fnehd_update_shelter'; // Change action for update
+    $fields[1]['callback'] = $update_nonce; // Use update nonce
+    $fields[1]['name'] = 'update_nonce'; // Ensure correct nonce field name
 }
 include FNEHD_PLUGIN_PATH . "templates/forms/form-fields/form-fields-manager.php";

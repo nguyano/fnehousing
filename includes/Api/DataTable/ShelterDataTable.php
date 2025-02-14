@@ -104,7 +104,6 @@ class ShelterDataTable {
      * Generates action buttons for an shelter row.
      *
      * @param int    $shelter_id The shelter ID.
-     * @param string $ref_id    The reference ID for the shelter.
      * @return string HTML string for the action buttons.
      */
     public static function shelterTableAction($shelter_id) {

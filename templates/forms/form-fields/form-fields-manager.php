@@ -28,7 +28,7 @@ foreach ($fields as $field) {
     $div_style = isset($field['display']) && !$field['display'] ? 'style="display: none;"' : '';
     $field_name = esc_attr($field['name']);
     $field_placeholder = isset($field['placeholder']) ? esc_attr($field['placeholder']) : '';
-    $is_required = '';//!empty($field['required']) ? 'required' : '';
+    $is_required = !empty($field['required']) ? 'required' : '';
 
     // Start outer div
     $output .= "<div class='form-group {$div_class}' id='{$div_id}' {$div_style}>";
@@ -135,12 +135,14 @@ foreach ($fields as $field) {
             break;
 			
 		case 'gallery':
-			 $output .= "<div class='{$id}-container'>
-				<button class='{$id}-upload-button btn btn-sm btn-outline-primary'>".__('Add gallery Images', 'fnehousing')."</button>
-				<input type='hidden' class='{$id}-input-field' name='{$field_name}'>
-				<div class='{$id}-preview-container'></div>
-				<button class='{$id}-remove-all btn btn-sm btn-outline-danger' style='display:none;'>".__('Remove All', 'fnehousing')."</button>
-			</div>";
+			 $output .= "
+				<div class='{$id}-container'>
+					<button type='button' class='{$id}-upload-button btn btn-sm btn-outline-primary'>".__('Add gallery Images', 'fnehousing')."</button>
+					<button type='button' class='{$id}-add-more btn btn-sm btn-outline-primary' style='display:none;'>".__('Add Images', 'fnehousing')."</button>
+					<input type='hidden' class='{$id}-input-field' id='{$id}' name='{$field_name}'>
+					<div class='w-100 {$id}-preview-container'></div>
+					<button type='button' class='{$id}-remove-all btn btn-sm btn-outline-danger' style='display:none;'>".__('Remove All', 'fnehousing')."</button>
+				</div>";
 			break;
 		
         default:

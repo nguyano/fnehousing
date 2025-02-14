@@ -10,135 +10,174 @@ function printDiv(divName){
 
 
 // Bootstrap Choices - Multiple Select Input
-function multChoiceSelect({ selectID }) {
-	// Ensure the dynamic ID is properly interpolated
-	var multipleCancelButton = new Choices(`#${selectID}`, {
-		removeItemButton: true,
-		renderChoiceLimit: 15
-	});
-	// Retrieve REST API Data Options
-	var selectedValues = fnehd[selectID]; 
-	// Safeguard against null or undefined API data
-	if (Array.isArray(selectedValues)) {
-		selectedValues.forEach(function(value) {
-			multipleCancelButton.setChoiceByValue(value);
-		});
-	} else {
-		console.error(`Invalid data for selectID: ${selectID}`);
-	}
+function multChoiceSelect({ selectID, data = [] }) {
+    const selectElement = document.getElementById(selectID);
+    if (!selectElement) return;
+
+    // Prevent duplicate initialization
+    if (selectElement.dataset.choicesInitialized === "true") return;
+
+    // Initialize Choices.js
+    const multipleCancelButton = new Choices(selectElement, {
+        removeItemButton: true,
+        renderChoiceLimit: 15
+    });
+
+    // Store the instance in dataset to prevent re-initialization
+    selectElement.dataset.choicesInitialized = "true";
+
+    // Populate choices with existing data
+    if (Array.isArray(data)) {
+        data.forEach(function(value) {
+            multipleCancelButton.setChoiceByValue(value);
+        });
+    }
 }
+
 
 
 // Function to handle image file selection and upload
-function FnehdWPFileUpload(buttonClass, fileInputClass, filePrvClass, addFileClass, changeFileClass, dismissPicClass) {
-	jQuery("body").on("click", buttonClass, function (e) {
-		e.preventDefault();
+function FnehdWPFileUpload(id) {
+    const buttonClass = `.${id}-AddFile, .${id}-ChangeFile`;
+    const fileInputClass = `.${id}-FileInput`;
+    const filePrvClass = `.${id}-FilePrv`;
+    const addFileClass = `.${id}-AddFile`;
+    const changeFileClass = `.${id}-ChangeFile`;
+    const dismissPicClass = `.${id}-dismissPic`;
 
-		const file_frame = wp.media.frames.file_frame = wp.media({
-			title: "Select or Upload an Image",
-			library: { type: "image" }, // MIME type
-			button: { text: "Select Image" },
-			multiple: false,
-		});
+    // Open WordPress Media Uploader
+    jQuery("body").on("click", buttonClass, function (e) {
+        e.preventDefault();
 
-		file_frame.on("select", function () {
-			const attachment = file_frame.state().get("selection").first().toJSON();
-			jQuery(fileInputClass).val(attachment.url);
-			jQuery(filePrvClass).addClass("thumbnail");
-			jQuery(filePrvClass).html("<img src='"+attachment.url+"' alt='...'>");
-			jQuery(addFileClass).hide();
-			jQuery(changeFileClass).show();
-			jQuery(dismissPicClass).show();
-		});
+        const file_frame = wp.media({
+            title: "Select or Upload an Image",
+            library: { type: "image" }, // Allow only images
+            button: { text: "Select Image" },
+            multiple: false,
+        });
 
-		file_frame.open();
-	});
+        file_frame.on("select", function () {
+            const attachment = file_frame.state().get("selection").first().toJSON();
+            jQuery(fileInputClass).val(attachment.url);
+            jQuery(filePrvClass).addClass("thumbnail").html(`<img src="${attachment.url}" alt="Selected Image">`);
+            jQuery(addFileClass).hide();
+            jQuery(changeFileClass).show();
+            jQuery(dismissPicClass).show();
+        });
 
-	// Reset upload field
-	jQuery("body").on("click", dismissPicClass, function () {
-		jQuery(changeFileClass).hide();
-		jQuery(addFileClass).show();
-		jQuery(dismissPicClass).hide();
-		jQuery(fileInputClass).val("");
-		jQuery(filePrvClass).removeClass("thumbnail");
-		jQuery(filePrvClass).html("");
-	});
+        file_frame.open();
+    });
+
+    // Remove image and reset fields
+    jQuery("body").on("click", dismissPicClass, function () {
+        jQuery(changeFileClass).hide();
+        jQuery(addFileClass).show();
+        jQuery(dismissPicClass).hide();
+        jQuery(fileInputClass).val("");
+        jQuery(filePrvClass).removeClass("thumbnail").html("");
+    });
 }
+
 
 // Function to handle multiple image upload
-function FnehdWPMultFileUpload(
-	buttonClass,
-	fileInputClass,
-	filePrvContainerClass,
-	prevUploadClass,
-	addFileClass,
-	changeFileClass,
-	dismissPicClass
-) {
-	jQuery(document).on("click", buttonClass, function (e) {
-		e.preventDefault();
+function FnehdWPMultFileUpload(id) {
+    const inputField = jQuery(`.${id}-input-field`);
+    
+    // Ensure the correct preview container is selected dynamically
+    function getPreviewContainer() {
+        return jQuery(`.${id}-preview-container:visible`);
+    }
 
-		const file_frame = wp.media({
-			title: "Select or Upload Images",
-			library: { type: "image" },
-			button: { text: "Select Images" },
-			multiple: true,
-		});
+    // Function to open WordPress Media Uploader
+    function openMediaUploader(existingImages = []) {
+        const file_frame = wp.media({
+            title: "Select or Upload Images",
+            library: { type: "image" },
+            button: { text: "Select Images" },
+            multiple: true,
+        });
 
-		file_frame.on("select", function () {
-			const selection = file_frame.state().get("selection").toJSON();
-			let imageUrls = [];
+        file_frame.on("select", function () {
+            const selection = file_frame.state().get("selection").toJSON();
+            let newImages = [];
+            const previewContainer = getPreviewContainer();
 
-			// Clear previous images before adding new ones
-			jQuery(filePrvContainerClass).empty();
+            selection.forEach((attachment) => {
+                if (!existingImages.includes(attachment.url)) {
+                    newImages.push(attachment.url);
+                    previewContainer.append(`
+                        <div class="flex image-preview thumbnail" style="display: inline-block; margin: 5px; position: relative;">
+                            <img src="${attachment.url}" class="${id}-prev-upload" 
+                                 style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                            <button type="button" class="remove-image" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; cursor: pointer;">
+                                X
+                            </button>
+                        </div>
+                    `);
+                }
+            });
 
-			selection.forEach((attachment) => {
-				imageUrls.push(attachment.url);
-				jQuery(filePrvContainerClass).append(`
-					<div class="image-preview thumbnail" style="display: inline-block; margin: 5px; position: relative;">
-						<img src="jQuery{attachment.url}" class="jQuery{prevUploadClass.replace(".", "")}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
-						<button class="remove-image" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; cursor: pointer;">X</button>
-					</div>
-				`);
-			});
+            let updatedImages = [...existingImages, ...newImages];
+            inputField.val(updatedImages.join(",")); // Correctly updating the hidden field
 
-			// Store image URLs in the hidden input field
-			jQuery(fileInputClass).val(imageUrls.join(","));
+            // Show/hide buttons based on image count
+            jQuery(`.${id}-upload-button`).hide();
+            jQuery(`.${id}-add-more`).show();
+            jQuery(`.${id}-remove-all`).show();
+        });
 
-			jQuery(addFileClass).hide();
-			jQuery(changeFileClass).show();
-			jQuery(dismissPicClass).show();
-		});
+        file_frame.open();
+    }
 
-		file_frame.open();
-	});
+    // Handle Upload button click
+    jQuery("body").on("click", `.${id}-upload-button`, function (e) {
+        e.preventDefault();
+        openMediaUploader();
+    });
 
-	// Remove individual images
-	jQuery(document).on("click", ".remove-image", function () {
-		jQuery(this).parent().remove();
-		let remainingImages = [];
-		jQuery(filePrvContainerClass)
-			.find("img")
-			.each(function () {
-				remainingImages.push(jQuery(this).attr("src"));
-			});
-		jQuery(fileInputClass).val(remainingImages.join(","));
-		if (remainingImages.length === 0) {
-			jQuery(addFileClass).show();
-			jQuery(changeFileClass).hide();
-			jQuery(dismissPicClass).hide();
-		}
-	});
+    // Handle Add More button click
+    jQuery("body").on("click", `.${id}-add-more`, function (e) {
+        e.preventDefault();
+        let existingImages = inputField.val() ? inputField.val().split(",") : [];
+        openMediaUploader(existingImages);
+    });
 
-	// Reset upload field (Remove all images)
-	jQuery("body").on("click", dismissPicClass, function () {
-		jQuery(changeFileClass).hide();
-		jQuery(addFileClass).show();
-		jQuery(dismissPicClass).hide();
-		jQuery(fileInputClass).val("");
-		jQuery(filePrvContainerClass).empty();
-	});
+    // Handle Remove Image click
+    jQuery("body").on("click", `.${id}-preview-container .remove-image`, function (e) {
+        e.preventDefault();
+        jQuery(this).parent().remove();
+
+        let remainingImages = [];
+        getPreviewContainer().find("img").each(function () {
+            remainingImages.push(jQuery(this).attr("src"));
+        });
+
+        inputField.val(remainingImages.join(",")); // update the hidden field
+
+        // Toggle button visibility
+        if (remainingImages.length === 0) {
+            jQuery(`.${id}-upload-button`).show();
+            jQuery(`.${id}-add-more`).hide();
+            jQuery(`.${id}-remove-all`).hide();
+        }
+    });
+
+    // Handle Remove All button click
+    jQuery("body").on("click", `.${id}-remove-all`, function (e) {
+        e.preventDefault();
+        getPreviewContainer().empty();
+        inputField.val(""); //Ensure input field is cleared
+        jQuery(`.${id}-upload-button`).show();
+        jQuery(`.${id}-add-more`).hide();
+        jQuery(`.${id}-remove-all`).hide();
+    });
+
+    //Ensure buttons inside collapsible divs work when shown
+    jQuery("body").on("shown.bs.collapse", function () {
+        jQuery(`.${id}-upload-button, .${id}-add-more, .${id}-remove-all`).prop("disabled", false);
+    });
 }
+
 
 
 

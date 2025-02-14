@@ -10,8 +10,8 @@ jQuery(document).ready(function($){
 		$("#fnehd-settings-panel h2").not('.fnehd-h2').replaceWith(function() { return $(this).contents();});
 	};
 	
-	//Collapse DIvs Scripts
-	$('body').on('shown.bs.collapse', function () {
+	//Collapse DIvs & Modals Scripts
+	$('body').on('shown.bs.collapse shown.bs.modal', function () {
 		$(function () {
 			$('[data-toggle="popover"]').popover({
 				container: 'body'
@@ -21,9 +21,6 @@ jQuery(document).ready(function($){
 		multChoiceSelect({ selectID: 'fnehd_eligible_individuals'});
 		multChoiceSelect({ selectID: 'fnehd_accepted_ages'});
 		multChoiceSelect({ selectID: 'fnehd_specific_services'});
-		multChoiceSelect({ selectID: 'Editfnehd_eligible_individuals'});
-		multChoiceSelect({ selectID: 'Editfnehd_accepted_ages'});
-		multChoiceSelect({ selectID: 'Editfnehd_specific_services'});
 	});
 
 	//Ajax Loader

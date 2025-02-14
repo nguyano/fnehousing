@@ -135,7 +135,7 @@ class ShelterDBManager {
 	 * Shelter Search Count
 	 */
 	public function shelterSearchCount($text) {
-		$sql = "SELECT COUNT(*) FROM {$this->tables->shelters} WHERE earner LIKE %s OR payer LIKE %s";
+		$sql = "SELECT COUNT(*) FROM {$this->tables->shelters} WHERE shelter_name LIKE %s OR shelter_organization LIKE %s";
 		return $this->db->fnehdQuery($sql, ["%$text%", "%$text%"], 'var');
 	}
 
@@ -143,7 +143,7 @@ class ShelterDBManager {
 	 * Shelter Search Data
 	 */
 	public function shelterSearchData($text) {
-		$sql = "SELECT * FROM {$this->tables->shelters} WHERE earner LIKE %s OR payer LIKE %s";
+		$sql = "SELECT * FROM {$this->tables->shelters} WHERE shelter_name LIKE %s OR shelter_organization LIKE %s";
 		return $this->db->fnehdQuery($sql, ["%$text%", "%$text%"]);
 	}
 

@@ -18,7 +18,8 @@ $js_data = [
    'table-id'    => 'fnehd-shelter-search-table',
    'ajax-action' => 'fnehd_shelter_search_datatable',
    'front-hidden-col' => 0,
-   'order-col'   => 5
+   'shelter-url' => $shelter_url?? '',
+   'order-col'   => 6
 ];
 
 $actions = [
@@ -44,11 +45,13 @@ $actions = [
 ];
 
 $headers = [
-    ['data-orderable' => 'false', 'content' => '<input type="checkbox" id="fnehd-select-all3">'],
+    ['data-orderable' => 'false', 'content' => '<input type="checkbox" id="fnehd-select-all">'],
     ['content' => __('No.', 'fnehousing')],
     ['content' => __('Reference ID', 'fnehousing')],
-    ['content' => __('Payer', 'fnehousing')],
-    ['content' => __('Earner', 'fnehousing')],
+    ['content' => __('Shelter Name', 'fnehousing')],
+    ['content' => __('Email', 'fnehousing')],
+	['content' => __('phone', 'fnehousing')],
+	['content' => __('Availability', 'fnehousing')],
     ['content' => __('Created Date', 'fnehousing')],
     ['content' => __('Action', 'fnehousing')],
 ];

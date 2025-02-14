@@ -25,7 +25,7 @@
 			</div>
 			<br><br>
 			<br>
-			<button type="submit" class="btn fnehd-btn-primary text-white" id="addTrackingBtn">
+			<button type="submit" class="btn fnehd-btn-primary text-white">
 				<?= $submit_text; ?> 
 			</button>
 			<?php if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") : ?>

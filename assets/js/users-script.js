@@ -441,22 +441,8 @@ jQuery(document).ready(function($){
 	});
 
 	// Initialize upload functionality for Add and Edit User Image
-	FnehdWPFileUpload(
-		".FnehdUserImg",
-		".FnehdUserImg-FileInput",
-		".FnehdUserImg-FilePrv",
-		".FnehdUserImg-AddFile",
-		".FnehdUserImg-ChangeFile",
-		".FnehdUserImg-dismissPic"
-	);
-	FnehdWPFileUpload(
-		".EditFnehdUserImg",
-		".EditFnehdUserImg-FileInput",
-		".EditFnehdUserImg-FilePrv",
-		".EditFnehdUserImg-AddFile",
-		".EditFnehdUserImg-ChangeFile",
-		".EditFnehdUserImg-dismissPic"
-	);
+	FnehdWPFileUpload("FnehdUserImg");
+	FnehdWPFileUpload("EditFnehdUserImg");
 
 
     //Scroll to Users Orders

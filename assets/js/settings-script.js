@@ -188,10 +188,9 @@ jQuery(document).ready(function($) {
     }); 
 
 
-
 	// Bootstrap Choices - Multiple Select Input ( multChoiceSelect() is defined in fnehd-admin.js )
-	multChoiceSelect({ selectID: 'rest_api_data'});
-	multChoiceSelect({ selectID: 'dispute_evidence_file_types'});
+	multChoiceSelect({ selectID: 'rest_api_data', data: fnehd.rest_api_data});
+	multChoiceSelect({ selectID: 'dispute_evidence_file_types', data: fnehd.dispute_evidence_file_types});
 
     // Special settings options
     var data = { 'action': 'fnehd_options' };

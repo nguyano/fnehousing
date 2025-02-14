@@ -298,7 +298,7 @@ jQuery(document).ready(function ($) {
                             showConfirmButton: false,
                             timer: 1500,
                         });
-                        $("#fnehd-shelter-update-modal").modal("hide");
+                        $("#fnehd-edit-shelter-modal").modal("hide");
                         $("#fnehd-edit-shelter-form-dialog").collapse("hide");
 						$("#EditShelterForm")[0].reset();
 						reloadShelters();
@@ -334,6 +334,8 @@ jQuery(document).ready(function ($) {
 				"#EditFnehdShelterManager": "manager",
 				"#EditFnehdShelterProjectType": "project_type",
 				"#EditFnehdShelterDescription": "description",
+				"#EditFnehdShelterMainImage": "main_image",
+				"#EditFnehdShelterGallery": "gallery",
 				"#Editfnehd_eligible_individuals": "eligible_individuals[]",
 				"#Editfnehd_accepted_ages": "accepted_ages[]",
 				"#Editfnehd_specific_services": "specific_services",
@@ -353,14 +355,52 @@ jQuery(document).ready(function ($) {
 			// Update the form title with the current user email
 			$("#CrtEditShelterID").html(response.data.shelter_name);
 
-			// Handle user image logic
+			// display available main image
 			let imagePath = response.data.main_image;
 			if (imagePath) {
-				$(".EditFnehdShelterMainImage-FilePrv").attr("class", "fileinput-new thumbnail");
-				$(".EditFnehdShelterMainImage-PrevUpload").attr("src", imagePath);
+				$(".EditFnehdShelterMainImage-FilePrv").html("<img src='"+imagePath+"' alt='...'>");
+				$(".EditFnehdShelterMainImage-FilePrv").addClass("thumbnail");
 				$(".EditFnehdShelterMainImage-AddFile").hide();
-				$(".EditFnehdShelterMainImage-ChangeFile, .EditFnehdUserImg-dismissPic").show();
+				$(".EditFnehdShelterMainImage-ChangeFile, .EditFnehdShelterMainImage-dismissPic").show();
 			}
+			
+			// Display available shelter gallery
+			const galleryData = response.data.gallery;
+
+			// Ensure galleryData is valid and not empty
+			if (galleryData && typeof galleryData === "string" && galleryData.trim() !== "") {
+				const selection = galleryData.split(',')
+					.map(item => item.trim())
+					.filter(item => item.length > 0); // Removes empty strings
+
+				if (selection.length > 0) {
+					selection.forEach((attachment) => {
+						$(".EditFnehdShelterGallery-preview-container").append(`
+							<div class="image-preview thumbnail" style="display: inline-block; margin: 5px; position: relative;">
+								<img src="${attachment}" class="EditFnehdShelterGallery-PrevUpload"
+									style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+								<button type="button" class="remove-image" 
+									style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; cursor: pointer;">
+									X
+								</button>
+							</div>
+						`);
+					});
+				}
+				
+				// $(".EditFnehdShelterGallery-upload-button").hide();
+				$(".EditFnehdShelterGallery-remove-all").show();
+				$(".EditFnehdShelterGallery-add-more").show();
+				$(".EditFnehdShelterGallery-upload-button").hide();
+			}
+			
+			
+			// Multiple Select Inputs
+			multChoiceSelect({ selectID: 'Editfnehd_eligible_individuals', data: response.data.eligible_individuals.split(',') });
+			multChoiceSelect({ selectID: 'Editfnehd_accepted_ages', data: response.data.accepted_ages.split(',') });
+			multChoiceSelect({ selectID: 'Editfnehd_specific_services', data: response.data.specific_services.split(',') });
+			
+
 		});
 
 		// Scroll to the form
@@ -369,6 +409,14 @@ jQuery(document).ready(function ($) {
 			"slow"
 		);
 	});
+	
+	
+	// Cleanup when collapse is hidden or modal is closed
+	$('body').on('hidden.bs.collapse hidden.bs.modal', function () {
+		// Optionally reset or clear image previews
+		$(".FnehdShelterGallery-preview-container, .EditFnehdShelterGallery-preview-container").empty();
+	});
+	
 
     // Define an array of page-function mappings
     const pageFunctionMap = [
@@ -507,45 +555,18 @@ jQuery(document).ready(function ($) {
             reloadSearchResults();
         });
     });
-
-    // Shelter gallery upload
-    FnehdWPMultFileUpload(
-        ".FnehdShelterGallery-upload-button",
-        ".FnehdShelterGallery-input-field",
-        ".FnehdShelterGallery-preview-container",
-        ".FnehdShelterGallery-preview",
-        ".FnehdShelterGallery-upload-button",
-        ".FnehdShelterGallery-change-image",
-        ".FnehdShelterGallery-remove-all"
-    );
-    FnehdWPMultFileUpload(
-        ".EditFnehdShelterGallery-upload-button",
-        ".EditFnehdShelterGallery-FileInput",
-        ".EditFnehdShelterGallery-FilePrv",
-        ".EditFnehdShelterGallery-PrevUpload",
-        ".EditFnehdShelterGallery-AddFile",
-        ".EditFnehdShelterGallery-ChangeFile",
-        ".EditFnehdShelterGallery-dismissPic"
-    );
 	
+
+    // Shelter gallery upload - Works for both collapsible elements & modals
+	$('body').on('shown.bs.collapse shown.bs.modal', function () {
+		FnehdWPMultFileUpload("FnehdShelterGallery");
+		FnehdWPMultFileUpload("EditFnehdShelterGallery");
+	});
+
 	
 	// Shelter main image upload
-    FnehdWPFileUpload(
-		".FnehdShelterMainImage",
-		".FnehdShelterMainImage-FileInput",
-		".FnehdShelterMainImage-FilePrv",
-		".FnehdShelterMainImage-AddFile",
-		".FnehdShelterMainImage-ChangeFile",
-		".FnehdShelterMainImage-dismissPic"
-	);
-	FnehdWPFileUpload(
-		".EditFnehdShelterMainImage",
-		".EditFnehdShelterMainImage-FileInput",
-		".EditFnehdShelterMainImage-FilePrv",
-		".EditFnehdShelterMainImage-AddFile",
-		".EditFnehdShelterMainImage-ChangeFile",
-		".EditFnehdShelterMainImage-dismissPic"
-	);
+    FnehdWPFileUpload("FnehdShelterMainImage");
+	FnehdWPFileUpload("EditFnehdShelterMainImage");
 	
 
     /******************************* Shelter Search ***********************************/
@@ -556,7 +577,7 @@ jQuery(document).ready(function ($) {
             "#fnehd-shelter-search-table",
             "fnehd_shelter_search_datatable",
             defaultDTColumns,
-            5,
+            6,
             0,
             extraData
         );

@@ -11,18 +11,19 @@ namespace Fnehousing\Api\DataTable;
 
 use Fnehousing\Api\DataTable\SSP;
 
+
 defined('ABSPATH') || exit;
 
 
 class ShelterSearchDataTable {
-
+	
     /**
-     * Fetches shelter search data for DataTable.
+     * Fetches shelter data for DataTable.
      *
-     * Handles search term processing, filtering, and data formatting.
+     * Handles server-side processing of shelter data and formats it for DataTable.
      * @return void Outputs JSON response for DataTable.
      */
-    public static function sheltersSearchTableData() {
+    public static function sheltersSearchsTableData() {
         global $wpdb;
 
         // Table primary key
@@ -38,7 +39,7 @@ class ShelterSearchDataTable {
                 'dt' => 0,
                 'formatter' => function ($d, $row) {
                     return [
-                        'check_box' => '<input type="checkbox" class="fnehd-checkbox2" data-fnehd-row-id="'. esc_attr($d) .'">',
+                        'check_box' => '<input type="checkbox" class="fnehd-checkbox" data-fnehd-row-id="' . esc_attr($d) . '">',
                         'row_id' => esc_attr($d),
                     ];
                 },
@@ -47,37 +48,47 @@ class ShelterSearchDataTable {
                 'db' => 'shelter_id',
                 'dt' => 1,
                 'formatter' => function ($d, $row) {
-                    static $rowIndex = 0;
-                    return ++$rowIndex;
+                    static $rowIndex = 0; // Static variable to maintain row index
+                    return ++$rowIndex; // Increment and return index
                 },
             ],
             ['db' => 'ref_id', 'dt' => 2],
-            ['db' => 'payer',  'dt' => 3],
-            ['db' => 'earner', 'dt' => 4],
+            ['db' => 'shelter_name', 'dt' => 3],
+            ['db' => 'email', 'dt' => 4],
+			['db' => 'phone', 'dt' => 5],
+			[
+                'db' => 'availability',
+                'dt' => 6,
+                'formatter' => function ($d, $row) {
+					$class = $d === 'Available'? 'text-success' : 'text-danger';
+                    return '<span class="'.$class.'">'.$d.'</span>';
+                },
+            ],
             [
                 'db' => 'creation_date',
-                'dt' => 5,
+                'dt' => 7,
                 'formatter' => function ($d, $row) {
                     return date_i18n('jS M Y', strtotime($d));
                 },
             ],
             [
                 'db' => 'shelter_id',
-                'dt' => 6,
+                'dt' => 8,
                 'formatter' => function ($d, $row) {
                     return [
-                        'actions' => self::shelterSearchTableAction($d),
+                        'actions' => self::sheltersSearchTableAction($d),
                     ];
                 },
             ],
         ];
+
 
         // Retrieve and sanitize the search term
         $search_text = isset($_POST['extraData'][0]['search']) ? sanitize_text_field($_POST['extraData'][0]['search']) : '';
         $search_like = '%' . $wpdb->esc_like($search_text) . '%';
 
         // Build the WHERE clause for filtering
-        $where = $wpdb->prepare("(earner LIKE %s OR payer LIKE %s)", $search_like, $search_like);
+        $where = $wpdb->prepare("(shelter_name LIKE %s OR shelter_organization LIKE %s)", $search_like, $search_like);
 
         // Fetch data using the SSP class with the WHERE clause
         $response = SSP::complex($_POST, $table, $primaryKey, $columns, $where);
@@ -111,25 +122,24 @@ class ShelterSearchDataTable {
     /**
      * Generates action buttons for an shelter row.
      *
-     * @param int $shelter_id The shelter ID.
+     * @param int    $shelter_id The shelter ID.
      * @return string HTML string for the action buttons.
      */
-    public static function shelterSearchTableAction($shelter_id) {
+    public static function sheltersSearchTableAction($shelter_id) {
         ob_start();
+
         ?>
         <center>
-            <a href="admin.php?page=fnehousing-view-shelter&shelter_id=<?= esc_attr($shelter_id); ?>" 
-               class="btn fnehd-btn-behance btn-icon-text fnehd-btn-sm">
-                <i class="fas fa-eye"></i> &nbsp;<?php esc_html_e('View', 'fnehousing'); ?>
-            </a>
-            <a href="#" 
-               id="<?= esc_attr($shelter_id); ?>" 
-               class="btn btn-danger btn-icon-text fnehd-btn-sm fnehd-delete-btn" 
-               data-action="fnehd_del_shelter">
-                <i class="fas fa-trash"></i> &nbsp;<?php esc_html_e('Delete', 'fnehousing'); ?>
-            </a>
+			<a href="#" id="<?= esc_attr($shelter_id); ?>" class="fnehd-edit-shelter-btn btn btn-info btn-icon-text fnehd-btn-sm"
+			   <?= (FNEHD_PLUGIN_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"'; ?>>
+				<i class="fas fa-pencil"></i> &nbsp;<?php esc_html_e('Edit', 'fnehousing'); ?>
+			</a>
+			<a href="#" id="<?= esc_attr($shelter_id); ?>" class="btn btn-danger btn-icon-text fnehd-btn-sm fnehd-delete-btn" data-action="fnehd_del_shelter">
+				<i class="fas fa-trash"></i> &nbsp;<?php esc_html_e('Delete', 'fnehousing'); ?>
+			</a>
         </center>
         <?php
+
         return ob_get_clean();
     }
 	

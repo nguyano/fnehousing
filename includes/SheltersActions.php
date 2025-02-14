@@ -6,7 +6,7 @@
  * @since 1.0.0
  * @package Fnehousing
  */
-
+ 
 namespace Fnehousing;
 
 use Fnehousing\Database\ShelterDBManager;
@@ -193,8 +193,8 @@ class SheltersActions extends ShelterDBManager {
 			fnehd_verify_permissions('manage_options');
 		}
 
-		// Update shelter and related meta data.
-		$this->updateData($this->tables->shelters, $data, $data['shelter_id']);
+		// Update shelter data.
+		$this->updateData($this->tables->shelters, $data, ['shelter_id' => $data['shelter_id']]);
 		
 		// Send success response.
 		wp_send_json_success(['message' => __('Shelter updated successfully', 'fnehousing')]);
