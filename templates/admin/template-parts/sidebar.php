@@ -32,7 +32,7 @@
                                 <?= ($menu['type'] === 'drop-down') ? 'data-toggle="collapse"' : ''; ?> 
                                 href="<?= esc_url($menu['href']); ?>">
                         <?php endif; ?>
-                                <i class="fas fa-<?= esc_attr($menu['icon']); ?>"></i>
+                                <i class="fa-solid fa-<?= esc_attr($menu['icon']); ?>"></i>
                                 <p>
                                     <?= esc_html__($menu['title'], 'fnehousing'); ?>
                                     <?php if ($menu['type'] === 'drop-down') : ?>

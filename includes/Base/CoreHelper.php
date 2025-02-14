@@ -786,7 +786,7 @@ function fnehd_user_profile_menu() {
 					<span class="text-capitalize text-dark"> <?= $username; ?></span>          
 				</a>
 				<div class="dropdown-menu dropdown-menu-right rounded p-2" aria-labelledby="FnehdManageShelterCollapse" x-placement="bottom-end" style="position: absolute; will-change: top, left; top: 55px; left: 125px;">
-					<a id="FnehdMyProfileFrontNavItem" class="dropdown-item fnehd-rounded" href="http://localhost/fne-housing/?endpoint=user_profile">
+					<a id="FnehdMyProfileFrontNavItem" class="dropdown-item fnehd-rounded" href="<?= home_url(); ?>/?endpoint=user_profile">
 						<i class="fnehd-nav-icon fas fa-user"></i>&nbsp; <?= __('My Profile', 'fnehousing'); ?>
 					</a>
 				   <div class="dropdown-divider"></div>

@@ -114,7 +114,6 @@ class AdminEnqueue {
 				'fnehd-shelter-js'   => 'assets/js/shelter-script.js',
 				'fnehd-admin-js'     => 'assets/js/fnehd-admin.js',
 				'fnehd-fxns-js'      => 'assets/js/fnehd-functions.js',
-				'fnehd-fa-admin-js'  => 'lib/fontawesome/js/all.min.js',
             ];
 			
 

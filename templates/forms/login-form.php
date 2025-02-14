@@ -45,7 +45,7 @@ $login_fields = [
     <div class="fnehd-login-wrap fnehd-rounded-right p-3 pr-5 pl-5">
         <div class="d-flex">
             <div class="w-100">
-                <h3 class="mb-4"><?= esc_html(FNEHD_LOGIN_FORM_LABEL); ?></h3>
+                <h3 class="text-dark mb-4"><?= esc_html(FNEHD_LOGIN_FORM_LABEL); ?></h3>
             </div>
         </div>
         <form enctype="multi-part/form-data" id="fnehd-user-login-form">

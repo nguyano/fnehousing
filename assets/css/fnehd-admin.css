@@ -2141,7 +2141,11 @@ input[type="checkbox"]:focus, input[type="color"]:focus, input[type="date"]:focu
 
 @media screen and (min-width: 991px) {
     /*For Mid-Sized Laptops | Default Sreen Styles*/
-
+	
+	.sidebar .logo .simple-text {
+	  font-size: 15px;
+	}
+	
     .fnehd-tab-pills {
         padding-left: 35%;
     }
@@ -2273,6 +2277,26 @@ input[type="checkbox"]:focus, input[type="color"]:focus, input[type="date"]:focu
         margin: -1% 0 0 1%;
         position: absolute;
     }
+	
+	.navbar.navbar-transparent {
+		left: 1%;
+	}
+	
+	.sidebar .sidebar-wrapper, .sidebar{
+	   width: 225px;
+	}
+	
+	.container-fluid {
+		width: 90%;
+	}	
+	
+	.folded .sidebar{
+	  top: 1.9%;
+	}
+	
+	.sidebar .logo .simple-text {
+	   font-size: 18px;
+	}
 }
 
 @media screen and (min-width: 3840px) {

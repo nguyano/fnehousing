@@ -80,7 +80,6 @@ class PublicEnqueue {
             'fnehd-shelter-pub-js'=> 'assets/js/shelter-script.js',
             'fnehd-user-pub-js'   => 'assets/js/users-script.js',
             'fnehd-noty-pub-js'   => 'assets/js/notification-script.js',
-			'fnehd-fa-pub-js'     => 'lib/fontawesome/js/all.min.js',
 			'fnehd-fxns-pub-js'   => 'assets/js/fnehd-functions.js',
 			'fnehd-pub-js'        => 'assets/js/fnehd-public.js'
 			
