@@ -48,7 +48,7 @@ foreach ($fields as $field) {
     // Add input fields
     switch ($field['type']) {
         case 'textarea':
-            $output .= "<textarea name='{$field_name}' id='{$id}' class='form-control' rows='4' placeholder='{$field_placeholder}' {$is_required}></textarea>";
+            $output .= "<textarea name='{$field_name}' id='{$id}' class='form-control' rows='8' placeholder='{$field_placeholder}' {$is_required}></textarea>";
             break;
 
         case 'select':
@@ -79,7 +79,7 @@ foreach ($fields as $field) {
                 }
             }
             break;
-
+			
         case 'checkbox':
             $output .= "
             <div class='togglebutton'>

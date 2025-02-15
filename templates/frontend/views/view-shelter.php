@@ -25,10 +25,6 @@ $shelter = $obj->getShelterById($shelter_id);
 
 $default_img_url = FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp";
 
-
-$features = [];
-$contact_url = '#';
-$update_url = '#';
 ?>
 
 <nav aria-label="breadcrumb">
@@ -50,12 +46,18 @@ $update_url = '#';
     </ol>
 </nav>
 
-<div class="row shadow-lg <?= wp_is_mobile()? ' p-3' : ' p-5'?>">
+<div class="row p-3">
     <!-- Main Content -->
-    <div class="fnehd-shelter-main-content border col-md-8<?= wp_is_mobile()? ' p-3' : ' p-5'?>">
+    <div class="fnehd-shelter-main-content border pb-5 col-md-8<?= wp_is_mobile()? ' p-3' : ' p-5'?>">
         <!-- Title Bar -->
         <div class="mb-4 fnehd-shelter-title-bar">
             <?= $shelter['shelter_name']; ?> <i class="text-success fa fa-check-circle"></i>
+			<button class="d-none d-md-flex contact-button bg-info float-right">
+				<?php esc_html_e('Mark as Referred', 'fnehousing'); ?>
+			</button>
+			<button class="w-100 d-block d-md-none mt-2 contact-button bg-info">
+				<?php esc_html_e('Mark as Referred', 'fnehousing'); ?>
+			</button>
         </div>
         <!-- Gallery -->
 		<div class="fnehd-gallery-container">
@@ -111,20 +113,23 @@ $update_url = '#';
         </div>
 
         <!-- Location Map -->
-        <div class="map">
-            <h2><?php esc_html_e('Location', 'fnehousing'); ?></h2>
-            <div style="overflow:hidden;max-width:100%;width:100%;height:280px; border: 4px solid silver;">
-               <iframe 
-					style="height:100%;width:100%;border:0;" 
-					frameborder="0" 
-					src="https://www.google.com/maps/embed/v1/place?q=<?php echo urlencode($shelter['address']); ?>&key=AIzaSyAUYJEfeT6Wpv6LvpTIwKGReJClMprgDuU">
-			  </iframe>
-            </div>
-        </div>
+		<div class="row justify-left">
+			<div class="col-md-12">
+				<h2><?php esc_html_e('Location', 'fnehousing'); ?></h2>
+				<div class="fne-shelter-map-container">
+					<iframe 
+						frameborder="0" 
+						src="https://www.google.com/maps/embed/v1/place?q=<?php echo urlencode($shelter['address']); ?>&key=<?= FNEHD_GOOGLE_MAP_API_KEY; ?>">
+					</iframe>
+				</div>
+			</div>
+		</div>
+		
     </div>
 
     <!-- Sidebar -->
     <div class="fnehd-shelter-sidebar border col-md-4 pt-5 p-4">
+		<!-- Availability update form-->
         <h3><?php esc_html_e('Update Shelter Availability', 'fnehousing'); ?></h3>
         <?php include FNEHD_PLUGIN_PATH."templates/forms/quick-shelter-update-form.php"; ?>
 
@@ -137,8 +142,8 @@ $update_url = '#';
                     ['icon' => 'user-check', 'label' => $shelter['manager'].' (Manager)'],
 					['icon' => 'phone', 'label' => $shelter['phone']],
                     ['icon' => 'envelope', 'label' => $shelter['email'], 'type' => 'email'],
-                    ['icon' => 'fax', 'label' => '222 567 7885 877'],
-                    ['icon' => 'globe', 'label' => 'exshelter.com', 'url' => 'exshelter.com'],
+                    ['icon' => 'fax', 'label' => $shelter['fax']],
+                    ['icon' => 'globe', 'label' => $shelter['website'], 'url' => $shelter['website']],
 					['icon' => 'map-marker-alt', 'label' => $shelter['address']]
                 ];
                 foreach ($contacts as $contact): ?>
@@ -152,13 +157,25 @@ $update_url = '#';
                     </li>
                 <?php endforeach; ?>
             </ul>
+			<button class="w-100 contact-button">
+				<?php esc_html_e('Contact Shelter', 'fnehousing'); ?>
+			</button>
         </div>
-	    <button class="w-100 contact-button" onclick="window.location.href='<?php echo esc_url($contact_url); ?>'">
-			<?php esc_html_e('Contact Shelter', 'fnehousing'); ?>
-		</button>
-		<button class="w-100 mt-3 contact-button bg-info">
-			<?php esc_html_e('Mark as Referred', 'fnehousing'); ?>
-		</button>
+		
+		 <!-- Working Hours -->
+        <div class="border p-4 fnehd-contact-details mt-5">
+            <h3><?php esc_html_e('Working Hours', 'fnehousing'); ?></h3><br>
+            <ul>
+                <?php 
+                $hours = explode(',', $shelter['hours']);
+                foreach ($hours as $hour): ?>
+                    <li>
+                        <i class="<?= strpos($hour, "Off") !== false ? 'text-danger ' : 'text-success '; ?>fas fa-clock"></i>&nbsp;
+                            <?= esc_html($hour); ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
 		
 		<!-- Features -->
 		<div class="mt-5 fnehd-shelter-features">

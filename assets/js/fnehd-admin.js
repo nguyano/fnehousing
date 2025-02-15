@@ -22,6 +22,21 @@ jQuery(document).ready(function($){
 		multChoiceSelect({ selectID: 'fnehd_accepted_ages'});
 		multChoiceSelect({ selectID: 'fnehd_specific_services'});
 	});
+	
+	// Disable time selection when "Off" is checked (Working hours form)
+    $("body").on("change", "input[name^='off']", function () {
+        let parentRow = $(this).closest("tr");
+        let startSelect = parentRow.find("select[name^='start']");
+        let endSelect = parentRow.find("select[name^='end']");
+
+        if ($(this).is(":checked")) {
+            startSelect.prop("disabled", true).val("");
+            endSelect.prop("disabled", true).val("");
+        } else {
+            startSelect.prop("disabled", false);
+            endSelect.prop("disabled", false);
+        }
+    });
 
 	//Ajax Loader
 	let activeAjaxCalls = 0;

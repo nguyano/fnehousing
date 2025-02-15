@@ -124,7 +124,7 @@ class SheltersActions extends ShelterDBManager {
 		fnehd_validate_ajax_nonce('fnehd_shelter_nonce', 'nonce');
 
 		// Sanitize and prepare form data.
-		$form_fields = ['shelter_name', 'shelter_organization', 'email', 'phone', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'hours', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
+		$form_fields = ['shelter_name', 'shelter_organization', 'email', 'phone', 'fax', 'website', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
 		$multiple_select_fields = ['eligible_individuals', 'accepted_ages', 'specific_services'];
 		
 		$multiple_select_data = fnehd_sanitize_mult_select_form_data($multiple_select_fields);
@@ -133,6 +133,7 @@ class SheltersActions extends ShelterDBManager {
 		$data['ref_id'] = fnehd_unique_id();
 		$data['user_id'] = get_current_user_id();
 		$data['referrals'] = 0;
+		$data['hours'] = fnehd_sanitize_working_hours_form_data();
 	
 	    $data = array_merge($data, $multiple_select_data);
 
@@ -179,8 +180,9 @@ class SheltersActions extends ShelterDBManager {
 		//fnehd_validate_ajax_nonce('fnehd_shelter_update_nonce', 'update_nonce');
 
 		// Sanitize and prepare form data.
-		$form_fields = ['shelter_id', 'shelter_name', 'shelter_organization', 'email', 'phone', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'hours', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
+		$form_fields = ['shelter_id', 'shelter_name', 'shelter_organization', 'email', 'phone', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
 		$data = fnehd_sanitize_form_data($form_fields);
+		$data['hours'] = fnehd_sanitize_working_hours_form_data();
 		
 		$multiple_select_fields = ['eligible_individuals', 'accepted_ages', 'specific_services'];
 		$multiple_select_data = fnehd_sanitize_mult_select_form_data($multiple_select_fields);
@@ -212,6 +214,28 @@ class SheltersActions extends ShelterDBManager {
 
         $shelter_id = intval($_POST['ShelterId'] ?? 0);
         $row = $this->getShelterById($shelter_id);
+		
+		//prepare working hours data
+		$working_hours = [];
+		$days_raw = explode(',', $row['hours']);
+
+		foreach ($days_raw as $day_data) {
+			$parts = explode(':', trim($day_data), 2);
+			$day = trim($parts[0]);
+			$hours = isset($parts[1]) ? trim($parts[1]) : 'Off';
+
+			if (strtolower($hours) === 'off') {
+				$working_hours[$day] = ['start' => '', 'end' => '', 'off' => true];
+			} else {
+				[$start, $end] = explode(' - ', $hours);
+				$working_hours[$day] = [
+					'start' => trim($start),
+					'end' => trim($end),
+					'off' => false
+				];
+			}
+		}
+		$row['working_hours'] = $working_hours; //add the prepared data
 
         wp_send_json_success($row);
     }

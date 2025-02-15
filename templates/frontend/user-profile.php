@@ -33,9 +33,9 @@ $user_data = $user->getUserById($user_id);
     <?php
     include_once FNEHD_PLUGIN_PATH . 'templates/frontend/user-routes.php';
     if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") {
-      include_once FNEHD_PLUGIN_PATH . "templates/frontend/front-modals.php";
+        include_once FNEHD_PLUGIN_PATH . "templates/frontend/front-modals.php";
     } else {
-	  include_once FNEHD_PLUGIN_PATH . 'templates/frontend/user-dialogs.php';// Render collapsible dialogs
+	    include_once FNEHD_PLUGIN_PATH . 'templates/frontend/user-dialogs.php';// Render collapsible dialogs
     }
    ?>
 

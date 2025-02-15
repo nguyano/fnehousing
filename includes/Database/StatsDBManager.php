@@ -99,7 +99,7 @@
 		public function totalAvailableShelters(){
 			if($this->getTotalShelterCount() > 0){
 				global $wpdb; 
-				$sql = "SELECT COUNT(*) FROM $this->sheltersTable WHERE availability = 1";
+				$sql = "SELECT COUNT(*) FROM $this->sheltersTable WHERE availability = 'Available'";
 				return $wpdb->get_var($sql);
 			} else {
 				return 0;

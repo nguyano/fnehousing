@@ -105,26 +105,10 @@
 				),
 				array(
 					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing Deposits', 
-					'menu_title' => 'Deposits', 
+					'page_title' => 'Fnehousing Activity Log', 
+					'menu_title' => 'Activity Log', 
 					'capability' => $this->capability(), 
-					'menu_slug' => 'fnehousing-deposits', 
-					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
-				),
-				array(
-					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing Withdrawals', 
-					'menu_title' => 'Withdrawals', 
-					'capability' => $this->capability(), 
-					'menu_slug' => 'fnehousing-withdrawals', 
-					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
-				),
-				array(
-					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing Transaction Log', 
-					'menu_title' => 'Transaction Log', 
-					'capability' => $this->capability(), 
-					'menu_slug' => 'fnehousing-transaction-log', 
+					'menu_slug' => 'fnehousing-activity-log', 
 					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
 				),
 				array(
@@ -137,8 +121,8 @@
 				),
 				array(
 					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing Statistics', 
-					'menu_title' => 'Statistics', 
+					'page_title' => 'Fnehousing Metrics', 
+					'menu_title' => 'Metrics', 
 					'capability' => $this->capability(), 
 					'menu_slug' => 'fnehousing-stats', 
 					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
@@ -149,14 +133,6 @@
 					'menu_title' => 'DB Backups', 
 					'capability' => $this->capability(), 
 					'menu_slug' => 'fnehousing-db-backups', 
-					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
-				),
-				array(
-					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing Disputes', 
-					'menu_title' => 'Disputes', 
-					'capability' => $this->capability(), 
-					'menu_slug' => 'fnehousing-disputes', 
 					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
 				),
 				array(
@@ -181,14 +157,6 @@
 					'menu_title' => '', 
 					'capability' => $this->capability(), 
 					'menu_slug' => 'fnehousing-view-shelter', 
-					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
-				),
-				array(
-					'parent_slug' => 'fnehousing-dashboard', 
-					'page_title' => 'Fnehousing View Dispute', 
-					'menu_title' => '', 
-					'capability' => $this->capability(), 
-					'menu_slug' => 'fnehousing-view-dispute', 
 					'callback' => array( $this->callbacks, 'adminGenTemplate' ), 
 				)
 			);

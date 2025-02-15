@@ -815,6 +815,10 @@ div.dt-container .dt-input {
 	border: none;
 }
 
+.wizard-container .card {
+    box-shadow: none !important;
+}
+
 .dark-edition .card {
    box-shadow: -9.962px -0.872px 70px 0px rgba(0, 0, 0, 0.2) !important;
 }
@@ -1133,11 +1137,10 @@ div.dt-container .dt-input {
 } 
 
 .card-wizard[data-color="purple"] .moving-tab {
-    background-color: #9c27b0;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14),
-        0 7px 10px -5px rgba(156, 39, 176, 0.4);
-    width: 50% !important;
-    border-radius: 30px;
+  background-color: #2271b1;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(14, 72, 124, 0.38);
+  width: 30% !important;
+  border-radius: 30px;
 }
 
 

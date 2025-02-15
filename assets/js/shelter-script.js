@@ -330,6 +330,8 @@ jQuery(document).ready(function ($) {
 				"#EditFnehdShelterOrganization": "shelter_organization",
 				"#EditFnehdShelterEmail": "email",
 				"#EditFnehdShelterPhone": "phone",
+				"#EditFnehdShelterFax": "fax",
+				"#EditFnehdShelterWebsite": "website",
 				"#EditFnehdShelterAddress": "address",
 				"#EditFnehdShelterManager": "manager",
 				"#EditFnehdShelterProjectType": "project_type",
@@ -339,7 +341,6 @@ jQuery(document).ready(function ($) {
 				"#Editfnehd_eligible_individuals": "eligible_individuals[]",
 				"#Editfnehd_accepted_ages": "accepted_ages[]",
 				"#Editfnehd_specific_services": "specific_services",
-				"#Editfnehd_hours": "hours",
 				"#Editfnehd_pet_policy": "pet_policy",
 				"#Editfnehd_shelter_availabity": "availability",
 				"#Editfnehd_bed_capacity": "bed_capacity",
@@ -351,6 +352,24 @@ jQuery(document).ready(function ($) {
 			for (const [fieldSelector, key] of Object.entries(fields)) {
 				$(fieldSelector).val(response.data[key]);
 			}
+			
+			//Populate Working Hours data
+			let workingHours = response.data.working_hours;
+			$.each(workingHours, function (day, data) {
+				let dayKey = day.trim();
+				let startSelect = $("select[name='start[" + dayKey + "]']");
+				let endSelect = $("select[name='end[" + dayKey + "]']");
+				let offCheckbox = $("input[name='off[" + dayKey + "]']");
+
+				if (data.off) {
+					offCheckbox.prop("checked", true);
+					startSelect.prop("disabled", true);
+					endSelect.prop("disabled", true);
+				} else {
+					startSelect.val(data.start);
+					endSelect.val(data.end);
+				}
+			});
 
 			// Update the form title with the current user email
 			$("#CrtEditShelterID").html(response.data.shelter_name);

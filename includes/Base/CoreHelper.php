@@ -293,6 +293,26 @@ function fnehd_sanitize_mult_select_form_data(array $multiple_select_fields) {
 }
 
 
+/**
+ * Sanitize and prepare working hours form data for processing.
+ *
+ * @return comma separated string Sanitized form data.
+ */
+function fnehd_sanitize_working_hours_form_data() {
+$days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];	
+$schedule = [];
+    foreach ($days as $day) {
+        if (isset($_POST['off'][$day])) {
+            $schedule[] = "$day: Off";
+        } else {
+            $start = sanitize_text_field($_POST['start'][$day]) ?? '';
+            $end = sanitize_text_field($_POST['end'][$day]) ?? '';
+            $schedule[] = "$day: $start - $end";
+        }
+    }
+    $working_hours = implode(", ", $schedule);
+	return $working_hours;
+}	
 
 /**
  * Get sanitized request data ($_GET).
