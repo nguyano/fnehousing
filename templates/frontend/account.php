@@ -25,10 +25,6 @@ ob_start();
         if (is_user_logged_in()) {
             if (fnehd_is_front_user()) { // Allow only Fnehousing users
                 include_once FNEHD_PLUGIN_PATH . "templates/frontend/user-profile.php";
-
-                if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") {
-                    include_once FNEHD_PLUGIN_PATH . "templates/frontend/front-modals.php";
-                }
             } else {
                 include_once FNEHD_PLUGIN_PATH . "templates/frontend/user-login.php";
             }

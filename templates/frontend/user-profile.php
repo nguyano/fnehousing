@@ -3,7 +3,7 @@
 /**
  * Front User Profile
  * This template renders the profile page for logged-in users, 
- * managing various user-related views based on the URL endpoint.
+ * view relevant shelters & managing various user-related views based on the URL endpoint.
  *
  * @since      1.0.0
  * @package    Fnehousing
@@ -31,12 +31,13 @@ $user_data = $user->getUserById($user_id);
 <div class="pb-5">
 
     <?php
-	
-    include FNEHD_PLUGIN_PATH . 'templates/frontend/user-routes.php';
-   // include FNEHD_PLUGIN_PATH . 'templates/frontend/user-nav-bar.php';
-    include FNEHD_PLUGIN_PATH . 'templates/frontend/user-dialogs.php';// Render collapsible dialogs
-
-    ?>
+    include_once FNEHD_PLUGIN_PATH . 'templates/frontend/user-routes.php';
+    if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") {
+      include_once FNEHD_PLUGIN_PATH . "templates/frontend/front-modals.php";
+    } else {
+	  include_once FNEHD_PLUGIN_PATH . 'templates/frontend/user-dialogs.php';// Render collapsible dialogs
+    }
+   ?>
 
     <div>
 		<?php
@@ -65,7 +66,7 @@ $user_data = $user->getUserById($user_id);
 			}
 		} else {
 			// Load the default dashboard view if no endpoint is specified.
-			include FNEHD_PLUGIN_PATH . 'templates/frontend/views/shelters.php';
+			include_once FNEHD_PLUGIN_PATH . 'templates/frontend/views/shelters.php';
 		}
 		?>
     </div>
