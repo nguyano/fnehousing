@@ -319,9 +319,8 @@ jQuery(document).ready(function($){
 	});
 
 
-    // Attach event listener to dropdown
-	const filterDropdown = jQuery('#shelter-filter'); 
-    filterDropdown.on('change', loadFilteredListings);
+    // Attach event listener to dropdown (load base on shelter availability)
+    jQuery('#shelter-filter').on('change', loadFilteredListings);
 
     // Initial load with all shelters
     initializeListingGrid(fnehd.all_shelters_rest_url);

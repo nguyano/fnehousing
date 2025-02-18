@@ -458,7 +458,7 @@ function initializeListingGrid(restUrl, postParams = {}) {
 
 // Load listings based on selected filter
 function loadFilteredListings() {
-	const selectedValue = filterDropdown.val(); // Get selected option
+	const selectedValue = jQuery('#shelter-filter').val(); // Get selected option
 	let apiUrl;
 
 	// Determine which API URL to use
