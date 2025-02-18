@@ -295,4 +295,369 @@ function initMaterialWizard() {
 }
 
 
+const gridContainer = jQuery('#fnehd-housing-grid');
+const paginationContainer = jQuery('#pagination');
+const perPage = 6; // items per page
 
+// Function to fetch data from a given REST API URL
+async function fetchListings(restUrl, postParams = {}) {
+	try {
+		const response = await fetch(restUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(postParams)
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
+
+		return await response.json();
+	} catch (error) {
+		console.error('Error fetching listings:', error);
+		return [];
+	}
+}
+
+// Render items based on view type
+function renderItems(items, page, view = "grid") {
+	const listingsContainer = gridContainer.find(".listings-container");
+	listingsContainer.empty(); // Clear existing items
+	const start = (page - 1) * perPage;
+	const end = start + perPage;
+	const shelter_url = jQuery("#fnehd-listing-wrapper").data("shelter-url");
+
+	if (view === "grid") {
+		jQuery('#shelter-table-view').hide();
+		jQuery('#fnehd-listing-wrapper').show();
+		items.slice(start, end).forEach((item) => {
+			const availabilityBadge = item.availability === 'Available'
+				? `<span class="availability-badge bg-green-500">Available (${item.available_beds})</span>`
+				: `<span class="availability-badge bg-red-500">Unavailable</span>`;
+
+			const template = `
+				<div class="listing-card border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+					<div class="relative">
+						<img src="${item.main_image ? item.main_image : fnehd.default_shelter_img}" alt="${item.shelter_name}" class="w-full h-48 object-cover">
+						${availabilityBadge}
+					</div>
+					<div class="p-4">
+						<h3 class="text-lg font-bold">${item.shelter_name}</h3>
+						<p class="text-gray-700"><b>Organization:</b> ${item.shelter_organization}</p>
+						<p class="text-gray-700"><b>Bed Capacity:</b> ${item.bed_capacity}</p>
+						<p class="text-gray-500"><b>Location:</b> ${item.address}</p>
+						<div class="mt-4">
+							<a href="${shelter_url}&shelter_id=${item.shelter_id}" class="btn btn-outline-primary btn-sm btn-round text-blue hover:text-blue-700">
+								View Details
+							</a>
+							<a href="#" class="btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
+								Quick Update
+							</a>
+						</div>
+					</div>
+				</div>`;
+			listingsContainer.append(template);
+		});
+	} else if (view === "list") {
+		jQuery('#shelter-table-view').hide();
+		jQuery('#fnehd-listing-wrapper').show();
+		items.slice(start, end).forEach((item) => {
+			const availabilityBadge = item.availability === 'Available'
+				? `<span class="availability-badge bg-green-500">Available (${item.available_beds})</span>`
+				: `<span class="availability-badge bg-red-500">Unavailable</span>`;
+	
+			const template = `
+				<div class="listing-card flex items-center border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 p-4">
+					<div class="relative">
+						<img src="${item.main_image ? item.main_image : fnehd.default_shelter_img}" alt="${item.shelter_name}" class="w-full h-48 object-cover">
+						${availabilityBadge}
+					</div>
+					<div class="details ml-4">
+						<h3 class="text-lg font-bold">${item.shelter_name}</h3>
+						<p class="text-gray-700"><b>Organization:</b> ${item.shelter_organization}</p>
+						<p class="text-gray-700"><b>Bed Capacity:</b> ${item.bed_capacity}</p>
+						<p class="text-gray-500"><b>Location:</b> ${item.address}</p>
+						<div class="mt-2">
+							<a href="${shelter_url}&shelter_id=${item.shelter_id}" class="btn btn-outline-primary btn-sm btn-round text-blue hover:text-blue-700">
+								View Details
+							</a>
+							<a href="#" class="btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
+								Quick Update
+							</a>
+						</div>
+					</div>
+				</div>`;
+			listingsContainer.append(template);
+		});
+	} else if (view === "table") {
+	   jQuery('#shelter-table-view').show();
+	   jQuery('#fnehd-listing-wrapper').hide();
+	}
+}
+
+// Setup pagination
+function setupPagination(items, view) {
+	const totalPages = Math.ceil(items.length / perPage);
+
+	if (totalPages === 0) {
+		paginationContainer.empty();
+		return;
+	}
+
+	paginationContainer.pagination({
+		dataSource: Array.from({ length: totalPages }, (_, i) => i + 1),
+		pageSize: 1,
+		callback: function (data, options) {
+			const currentPage = options.pageNumber || 1;
+			renderItems(items, currentPage, view);
+		},
+	});
+}
+
+// Function to initialize the listing grid
+function initializeListingGrid(restUrl, postParams = {}) {
+	fetchListings(restUrl, postParams).then(items => {
+
+		if (items.length === 0) {
+			gridContainer.html('<p>No listings available.</p>');
+			return;
+		}
+
+		let currentView = 'grid'; // Default view
+		renderItems(items, 1, currentView);
+		setupPagination(items, currentView);
+
+		// Event listeners for view toggle buttons
+		jQuery('#fnehd-grid-view').on('click', function () {
+			currentView = 'grid';
+			gridContainer.removeClass('list-view').addClass('grid-view');
+			jQuery(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+			jQuery('#fnehd-list-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+			renderItems(items, 1, currentView);
+			setupPagination(items, currentView);
+		});
+
+		jQuery('#fnehd-list-view').on('click', function () {
+			currentView = 'list';
+			gridContainer.removeClass('grid-view').addClass('list-view');
+			jQuery(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+			jQuery('#fnehd-grid-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+			renderItems(items, 1, currentView);
+			setupPagination(items, currentView);
+		});
+
+		jQuery('#fnehd-table-view').on('click', function () {
+			currentView = 'table';
+			jQuery(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+			jQuery('#fnehd-grid-view, #fnehd-list-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+			renderItems(items, 1, currentView);
+		});
+	});
+}
+
+
+// Load listings based on selected filter
+function loadFilteredListings() {
+	const selectedValue = filterDropdown.val(); // Get selected option
+	let apiUrl;
+
+	// Determine which API URL to use
+	if (selectedValue === 'available') {
+		apiUrl = fnehd.available_shelters_rest_url;
+		jQuery("#fne-shelter-count").text(fnehd.available_shelter_count);
+	} else if (selectedValue === 'unavailable') {
+		jQuery("#fne-shelter-count").text(fnehd.unavailable_shelter_count);
+		apiUrl = fnehd.unavailable_shelters_rest_url;
+	} else {
+		jQuery("#fne-shelter-count").text(fnehd.total_shelter_count);
+		apiUrl = fnehd.all_shelters_rest_url;
+	}
+
+	// Reload the listings with the new API URL
+	initializeListingGrid(apiUrl);
+}
+
+
+// Listing Search
+function fetchSearchListings() {
+	let lastValidSearchParams = null; // Store last valid search state
+	let searchParams = {
+		search: jQuery('#search').val().trim() || null,
+		gender: getCheckedValues('gender'),
+		age: getCheckedValues('age'),
+		pets: getCheckedValues('pets'),
+		assistance: getCheckedValues('assistance'),
+		shelter_type: getCheckedValues('shelter_type'),
+		beds: jQuery('#beds').val().trim() || null
+	};
+
+	// Remove empty filters
+	Object.keys(searchParams).forEach(key => {
+		if (!searchParams[key] || (Array.isArray(searchParams[key]) && searchParams[key].length === 0)) {
+			delete searchParams[key];
+		}
+	});
+
+	// If no filters are applied, reset to all listings
+	if (Object.keys(searchParams).length === 0) {
+		lastValidSearchParams = null;
+		initializeListingGrid(fnehd.all_shelters_rest_url); // Show all listings
+		return;
+	}
+
+	// Fetch filtered listings
+	fetchListings(fnehd.shelters_search_rest_url, searchParams).then(listings => {
+		if (Array.isArray(listings) && listings.length > 0) {
+			lastValidSearchParams = { ...searchParams }; // Store the last valid search
+			initializeListingGrid(fnehd.shelters_search_rest_url, searchParams); // Show results
+		} else {
+			// If no results, check if we have a previous valid search
+			if (lastValidSearchParams && JSON.stringify(searchParams) !== JSON.stringify(lastValidSearchParams)) {
+				initializeListingGrid(fnehd.shelters_search_rest_url, lastValidSearchParams);
+			} else {
+				initializeListingGrid(fnehd.all_shelters_rest_url); // Show all listings
+			}
+		}
+	}).catch(error => {
+		console.error('Error fetching filtered listings:', error);
+		initializeListingGrid(fnehd.all_shelters_rest_url); // Fallback to all listings in case of error
+	});
+}
+
+
+// Function to retrieve checked checkbox values dynamically
+function getCheckedValues(category) {
+	let values = jQuery(`input[name="${category}"]:checked`).map(function () {
+		return this.value;
+	}).get();
+	
+	return values.length > 0 ? values : null; // Return null if nothing is selected
+}
+
+
+
+//Maps Function
+async function initMap() {
+    const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 39.7392, lng: -104.9903 }, // Centered at Denver, CO
+        zoom: 10
+    });
+
+    const customIcon = {
+        url: fneIconUrl,
+        scaledSize: new google.maps.Size(32, 32),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(25, 50)
+    };
+
+    const defaultIcon = null; // Uses Google's default marker icon
+    const geocoder = new google.maps.Geocoder();
+
+    let listingMarkers = new Map();
+
+    try {
+        const listings = await fetchListings(fnehd.all_shelters_rest_url);
+
+        for (const listing of listings) {
+            if (!listing.address) continue; // Skip if no address
+
+            // Convert address to coordinates using Geocoding API
+            const position = await geocodeAddress(geocoder, listing.address);
+
+            if (position) {
+                const marker = new google.maps.Marker({
+                    position,
+                    map: map,
+                    title: listing.shelter_name,
+                    icon: customIcon
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div class="listing-card flex items-center border rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 p-4">
+                            <div>
+                                <img src="${listing.main_image}" alt="House" width="300" class="w-full h-48 object-cover">
+                            </div>
+                            <div class="details ml-4">
+                                <h3 class="text-lg font-bold">${listing.shelter_name}</h3>
+                                <p class="text-gray-700">Location: ${listing.address}</p>
+                                <div class="mt-2">
+                                    <a href="`+fneShelterUrl+`&shelter_id=${listing.shelter_id}" class="text-blue-500 hover:text-blue-700">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => {
+                    infoWindow.open(map, marker);
+                });
+
+                listingMarkers.set(listing.address.toLowerCase(), marker);
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing map:', error);
+    }
+	
+	const input = document.createElement('input');
+	input.type = 'text';
+	input.id = 'search-bar';
+	input.placeholder = 'Search location...';
+	input.style.cssText = `
+		position: absolute;
+		margin-top: 15px;
+		margin-left: 550px;
+		transform: translateX(-50%);
+		width: 550px;
+		padding: 15px;
+		font-size: 14px;
+		z-index: 9999;
+		background-color: white;
+		border: 1px solid rgb(204, 204, 204);
+		border-radius: 30px;
+		height: 40px;
+		border: solid #d1d1d1;
+	`;
+	document.body.appendChild(input);
+
+	const searchBox = new google.maps.places.SearchBox(input);
+	map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+	// Update search bounds when map moves
+	map.addListener('bounds_changed', () => {
+		searchBox.setBounds(map.getBounds());
+	});
+
+	// Handle search box input
+	searchBox.addListener('places_changed', () => {
+		const places = searchBox.getPlaces();
+
+		if (places.length === 0) return;
+
+		const bounds = new google.maps.LatLngBounds();
+		places.forEach((place) => {
+			if (!place.geometry || !place.geometry.location) return;
+			bounds.extend(place.geometry.location);
+		});
+
+		map.fitBounds(bounds);
+	});
+
+}
+
+/**
+ * Convert an address to lat/lng using Google Geocoding API
+ */
+function geocodeAddress(geocoder, address) {
+    return new Promise((resolve, reject) => {
+        geocoder.geocode({ address: address }, (results, status) => {
+            if (status === "OK" && results[0]) {
+                resolve(results[0].geometry.location);
+            } else {
+                console.warn(`Geocoding failed for address: ${address}, Status: ${status}`);
+                resolve(null);
+            }
+        });
+    });
+}

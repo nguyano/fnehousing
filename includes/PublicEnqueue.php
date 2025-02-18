@@ -95,8 +95,17 @@ class PublicEnqueue {
 			}
 		}
 		
+		
+		$icon_url = FNEHD_PLUGIN_URL . 'assets/img/fnehousing-icon.png'; 
+		$shelter_url = home_url() . '?endpoint=view_shelter';
+
+		wp_add_inline_script('fnehd-pub-js', "
+			var fneShelterUrl = '$shelter_url';
+			var fneIconUrl = '$icon_url';
+			", 'before');
+		
 		wp_enqueue_script(
-			'glot-gmap-js', 'https://maps.googleapis.com/maps/api/js?key='.FNEHD_GOOGLE_MAP_API_KEY.'&callback=initMap&libraries=places', 
+			'fnehd-gmap-js', 'https://maps.googleapis.com/maps/api/js?key='.FNEHD_GOOGLE_MAP_API_KEY.'&callback=initMap&libraries=places', 
 			array('jquery'), // Dependencies (jQuery in this case)
 			null, // Version (null disables versioning)
 			true // Load script in the footer
