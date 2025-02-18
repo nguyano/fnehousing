@@ -566,7 +566,7 @@ class UsersActions extends UsersDBManager {
 					],
 					home_url()
 				);
-				wp_mail('yanlech25@gmail.com', __('Password Reset', 'fnehousing'),  __('Click here to reset your password: ', 'fnehousing') . $reset_url);
+				wp_mail($user->user_email, __('Password Reset', 'fnehousing'),  __('Click here to reset your password: ', 'fnehousing') . $reset_url);
 				wp_send_json_success(['message' => __('Check your email for the password reset link', 'fnehousing')]);
 			}
 		}
