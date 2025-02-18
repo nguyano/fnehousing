@@ -11,6 +11,8 @@ namespace Fnehousing\Api\RestApi;
 
 use Fnehousing\Database\ShelterDBManager;
 
+use WP_REST_Request; 
+
 defined('ABSPATH') || exit;
 
 class RestApiEndpoints {
@@ -32,32 +34,40 @@ class RestApiEndpoints {
             'permission_callback' => [$this, 'validateApiKey'], // Validate API key
         ]);
     }
-	
 	public function allShelterListingEndpoint() {
         register_rest_route('fnehousing/v1', '/listings', array(
-            'methods' => 'GET',
+            'methods' => 'POST',
             'callback' => array($this, 'getAllShelterListings'), // Specify class method
 			'permission_callback' => '__return_true'
         ));
     }
-	
 	public function availableShelterListingEndpoint() {
         register_rest_route('fnehousing/v1', '/available-listings', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'getAvailableShelterListings'), // Specify class method
+            'methods' => 'POST',
+            'callback' => array($this, 'getAvailableShelterListings'),
 			'permission_callback' => '__return_true'
         ));
     }
-	
 	public function unavailableShelterListingEndpoint() {
         register_rest_route('fnehousing/v1', '/unavailable-listings', array(
-            'methods' => 'GET',
-            'callback' => array($this, 'getUnavailableShelterListings'), // Specify class method
+            'methods' => 'POST',
+            'callback' => array($this, 'getUnavailableShelterListings'), 
 			'permission_callback' => '__return_true'
         ));
     }
 	
-	//get shelter listings based availability state
+	public function searchShelterListingEndpoint() {
+        register_rest_route('fnehousing/v1', '/shelter-search-listings', array(
+            'methods' => 'POST',
+            'callback' => array($this, 'getSearchShelterListings'), 
+			'permission_callback' => '__return_true'
+        ));
+    }
+	
+	
+	/**
+	 *get shelter listings based availability state
+	 */
     public function getAllShelterListings() {
         $listings = $this->shelter->fetchAllShelters();
         return rest_ensure_response($listings);
@@ -72,6 +82,55 @@ class RestApiEndpoints {
         $listings = $this->shelter->fetchSheltersByAvailability('Unavailable');
         return rest_ensure_response($listings);
     }
+	
+	
+	/**
+	 * Shelter search frontend
+	 */
+	public function getSearchShelterListings(WP_REST_Request $request) {
+
+		$search = sanitize_text_field($request->get_param('search'));
+		$gender = (array) $request->get_param('gender'); // Convert to array if not already
+		$age = (array) $request->get_param('age');
+		$pets = (array) $request->get_param('pets');
+		$assistance = (array) $request->get_param('assistance');
+		$shelter_type = (array) $request->get_param('shelter_type');
+		$beds = intval($request->get_param('beds')) ?? 0;
+
+		$conditions = ["1=1"]; // Default condition (always true)
+		$params = [];
+
+		// Search keyword (applies to multiple fields)
+		if (!empty($search)) {
+			$conditions[] = "(shelter_name LIKE %s OR shelter_organization LIKE %s OR description LIKE %s)";
+			$params[] = "%{$search}%";
+			$params[] = "%{$search}%";
+			$params[] = "%{$search}%";
+		}
+
+		// Use LIKE instead of IN for flexible searches
+		foreach (['gender' => 'eligible_individuals', 'age' => 'accepted_ages', 'pets' => 'pet_policy', 'assistance' => 'specific_services', 'shelter_type' => 'project_type'] as $param => $column) {
+			if (!empty($$param)) {
+				$subConditions = [];
+				foreach ($$param as $value) {
+					$subConditions[] = "$column LIKE %s";
+					$params[] = "%{$value}%"; 
+				}
+				$conditions[] = '(' . implode(' AND ', $subConditions) . ')';
+			}
+		}
+
+		// Beds availability condition
+		if ($beds > 0) {
+			$conditions[] = "available_beds >= %d";
+			$params[] = $beds;
+		}
+		
+		$results = $this->shelter->shelterSearchListings($conditions, $params);
+
+		return rest_ensure_response($results);
+	}
+
 	
 	
 

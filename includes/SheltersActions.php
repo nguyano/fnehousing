@@ -39,7 +39,7 @@ class SheltersActions extends ShelterDBManager {
             'fnehd_export_log_excel' => 'exportLogToExcel',
             'fnehd_shelter_search' => 'actionShelterSearch',
             'fnehd_reload_shelter_search' => 'reloadSearchResults',
-			'fnehd_dash_shelters' => 'actionDisplayDashShelters'
+			'fnehd_dash_shelters' => 'actionDisplayDashShelters',
         ];
 
         // Register AJAX actions for logged-in users.
@@ -310,7 +310,7 @@ class SheltersActions extends ShelterDBManager {
 	
 
 	/**
-	 * Shelter search 
+	 * Shelter search backend
 	 */
 	public function reloadSearchResults() { 
 	
@@ -328,6 +328,5 @@ class SheltersActions extends ShelterDBManager {
         $this->reloadSearchResults();
 	}
 	
-
 
 } 

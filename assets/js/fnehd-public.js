@@ -322,12 +322,21 @@ jQuery(document).ready(function($){
 	
     const gridContainer = $('#fnehd-housing-grid');
 	const paginationContainer = $('#pagination');
-	const perPage = 6; // Adjust items per page as needed
+	const perPage = 6; // items per page
 
 	// Function to fetch data from a given REST API URL
-	async function fetchListings(restUrl) {
+ 	async function fetchListings(restUrl, postParams = {}) {
 		try {
-			const response = await fetch(restUrl);
+			const response = await fetch(restUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(postParams)
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
 			return await response.json();
 		} catch (error) {
 			console.error('Error fetching listings:', error);
@@ -407,7 +416,6 @@ jQuery(document).ready(function($){
 				listingsContainer.append(template);
 			});
 		} else if (view === "table") {
-			// Build a table structure for table view
 		   $('#shelter-table-view').show();
 		   $('#fnehd-listing-wrapper').hide();
 		}
@@ -433,48 +441,49 @@ jQuery(document).ready(function($){
 	}
 
 	// Function to initialize the listing grid
-	function initializeListingGrid(restUrl) {
-		fetchListings(restUrl).then(items => {
-			if (items.length > 0) {
-				let currentView = 'grid'; // Default view
+	function initializeListingGrid(restUrl, postParams = {}) {
+		fetchListings(restUrl, postParams).then(items => {
 
-				renderItems(items, 1, currentView); // Render first page
-				setupPagination(items, currentView); // Initialize pagination
-
-				// Event listeners for view toggle buttons
-				$('#fnehd-grid-view').on('click', function () {
-					currentView = 'grid';
-					gridContainer.removeClass('list-view').addClass('grid-view');
-					$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
-					$('#fnehd-list-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
-					renderItems(items, 1, currentView);
-					setupPagination(items, currentView);
-				});
-
-				$('#fnehd-list-view').on('click', function () {
-					currentView = 'list';
-					gridContainer.removeClass('grid-view').addClass('list-view');
-					$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
-					$('#fnehd-grid-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
-					renderItems(items, 1, currentView);
-					setupPagination(items, currentView);
-				});
-
-				$('#fnehd-table-view').on('click', function () {
-					currentView = 'table';
-					$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
-					$('#fnehd-grid-view, #fnehd-list-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
-					renderItems(items, 1, currentView);
-				});
-			} else {
+			if (items.length === 0) {
 				gridContainer.html('<p>No listings available.</p>');
+				return;
 			}
+
+			let currentView = 'grid'; // Default view
+			renderItems(items, 1, currentView);
+			setupPagination(items, currentView);
+
+			// Event listeners for view toggle buttons
+			$('#fnehd-grid-view').on('click', function () {
+				currentView = 'grid';
+				gridContainer.removeClass('list-view').addClass('grid-view');
+				$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+				$('#fnehd-list-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+				renderItems(items, 1, currentView);
+				setupPagination(items, currentView);
+			});
+
+			$('#fnehd-list-view').on('click', function () {
+				currentView = 'list';
+				gridContainer.removeClass('grid-view').addClass('list-view');
+				$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+				$('#fnehd-grid-view, #fnehd-table-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+				renderItems(items, 1, currentView);
+				setupPagination(items, currentView);
+			});
+
+			$('#fnehd-table-view').on('click', function () {
+				currentView = 'table';
+				$(this).addClass('bg-secondary text-white').removeClass('bg-gray-200 text-gray-700');
+				$('#fnehd-grid-view, #fnehd-list-view').removeClass('bg-secondary text-white').addClass('bg-gray-200 text-gray-700');
+				renderItems(items, 1, currentView);
+			});
 		});
 	}
+	
 
+    // Load listings based on selected filter
 	const filterDropdown = $('#shelter-filter'); 
-
-    // Function to load listings based on selected filter
     function loadFilteredListings() {
         const selectedValue = filterDropdown.val(); // Get selected option
         let apiUrl;
@@ -500,6 +509,75 @@ jQuery(document).ready(function($){
 
     // Initial load with all shelters
     initializeListingGrid(fnehd.all_shelters_rest_url);
+	
+	
+
+	// Listing Search
+	let lastValidSearchParams = null; // Store last valid search state
+
+	function fetchSearchListings() {
+		let searchParams = {
+			search: $('#search').val().trim() || null,
+			gender: getCheckedValues('gender'),
+			age: getCheckedValues('age'),
+			pets: getCheckedValues('pets'),
+			assistance: getCheckedValues('assistance'),
+			shelter_type: getCheckedValues('shelter_type'),
+			beds: $('#beds').val().trim() || null
+		};
+
+		// Remove empty filters
+		Object.keys(searchParams).forEach(key => {
+			if (!searchParams[key] || (Array.isArray(searchParams[key]) && searchParams[key].length === 0)) {
+				delete searchParams[key];
+			}
+		});
+
+		// If no filters are applied, reset to all listings
+		if (Object.keys(searchParams).length === 0) {
+			lastValidSearchParams = null;
+			initializeListingGrid(fnehd.all_shelters_rest_url); // Show all listings
+			return;
+		}
+
+		// Fetch filtered listings
+		fetchListings(fnehd.shelters_search_rest_url, searchParams).then(listings => {
+			if (Array.isArray(listings) && listings.length > 0) {
+				lastValidSearchParams = { ...searchParams }; // Store the last valid search
+				initializeListingGrid(fnehd.shelters_search_rest_url, searchParams); // Show results
+			} else {
+				// If no results, check if we have a previous valid search
+				if (lastValidSearchParams && JSON.stringify(searchParams) !== JSON.stringify(lastValidSearchParams)) {
+					initializeListingGrid(fnehd.shelters_search_rest_url, lastValidSearchParams);
+				} else {
+					initializeListingGrid(fnehd.all_shelters_rest_url); // Show all listings
+				}
+			}
+		}).catch(error => {
+			console.error('Error fetching filtered listings:', error);
+			initializeListingGrid(fnehd.all_shelters_rest_url); // Fallback to all listings in case of error
+		});
+	}
+
+
+
+
+	// Function to retrieve checked checkbox values dynamically
+	function getCheckedValues(category) {
+		let values = $(`input[name="${category}"]:checked`).map(function () {
+			return this.value;
+		}).get();
+		
+		return values.length > 0 ? values : null; // Return null if nothing is selected
+	}
+
+	// Event listeners to handle progressive filtering
+	$('#search, #beds').on('input', fetchSearchListings);
+	$('input[type=checkbox]').on('change', function () {
+		fetchSearchListings();
+	});
+		
+	
 
 	
 	

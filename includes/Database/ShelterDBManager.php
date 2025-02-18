@@ -132,7 +132,7 @@ class ShelterDBManager {
 	
 	
 	/**
-	 * Shelter Search Count
+	 * Shelter Search Count backend
 	 */
 	public function shelterSearchCount($text) {
 		$sql = "SELECT COUNT(*) FROM {$this->tables->shelters} WHERE shelter_name LIKE %s OR shelter_organization LIKE %s";
@@ -140,11 +140,37 @@ class ShelterDBManager {
 	}
 
 	/**
-	 * Shelter Search Data
+	 * Shelter Search Data backend
 	 */
 	public function shelterSearchData($text) {
 		$sql = "SELECT * FROM {$this->tables->shelters} WHERE shelter_name LIKE %s OR shelter_organization LIKE %s";
 		return $this->db->fnehdQuery($sql, ["%$text%", "%$text%"]);
+	}
+	
+	
+	/**
+	 * Shelter Search Data backend
+	 */
+	public function shelterSearchListings($conditions, $params) {
+		 $sql = "SELECT * FROM {$this->tables->shelters} WHERE 1=1"; 
+
+		if (!empty($conditions)) {
+			$sql .= " AND " . implode(" AND ", $conditions);
+		}
+		return $this->db->fnehdQuery($sql, $params, 'results');
+	}
+	
+	
+	/**
+	 * Count Shelter Search Results backend
+	 */
+	public function countShelterSearchListings($conditions, $params) {
+		 $sql = "SELECT COUNT(*) FROM {$this->tables->shelters} WHERE 1=1"; 
+
+		if (!empty($conditions)) {
+			$sql .= " AND " . implode(" AND ", $conditions);
+		}
+		return $this->db->fnehdQuery($sql, $params, 'var');
 	}
 
 

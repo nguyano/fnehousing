@@ -13,11 +13,9 @@ $dropdown_options = [
     'gender' => [
         'label' => __('Select Gender', 'fnehousing'),
         'items' => [
-            'females' => __('Females', 'fnehousing'),
-            'males' => __('Males', 'fnehousing'),
-            'transgender' => __('Transgender', 'fnehousing'),
-            'non-conforming' => __('Non-Conforming', 'fnehousing'),
-            'questioning' => __('Questioning', 'fnehousing'),
+			'males' => __('Men', 'fnehousing'),
+            'females' => __('Women', 'fnehousing'),
+            'transgender' => __('Transgender', 'fnehousing')
         ],
     ],
     'age' => [
@@ -32,8 +30,8 @@ $dropdown_options = [
     'pets' => [
         'label' => __('Select Pet Policy', 'fnehousing'),
         'items' => [
-            'allowed' => __('Pets Allowed', 'fnehousing'),
-            'not-allowed' => __('Pets Not Allowed', 'fnehousing'),
+            'allowed' => __('Allowed', 'fnehousing'),
+            'not-allowed' => __('Not Allowed', 'fnehousing'),
         ],
     ],
     'assistance' => [
@@ -46,6 +44,17 @@ $dropdown_options = [
             'transferring' => __('Need Transferring Assistance', 'fnehousing'),
         ],
     ],
+	'shelter_type' => [
+        'label' => __('Select Shelter Type', 'fnehousing'),
+        'items' => [
+            'es_entry_exit' => __('ES: Emergency Shelter (Entry/Exit)', 'fnehousing'),
+            'rrh' => __('RRH: Rapid Re-Housing (Housing With Or Without Services)', 'fnehousing'),
+            'th' => __('TH: Transitional Housing', 'fnehousing'),
+            'psh' => __('PSH: Permanent Supportive Housing', 'fnehousing'),
+            'es_night' => __('ES: Emergency Shelter (Night-By-Night)', 'fnehousing'),
+            'oph' => __('OPH: Other Permanent Housing (No Services)', 'fnehousing'),
+        ],
+    ],
 ];
 
 
@@ -53,10 +62,9 @@ $dropdown_options = [
 
 <div class="p-3 card shadow-lg mt-5">
     <div class="card-body">
-
         <!-- Search Field -->
         <div class="fnehd-listing-search">
-            <div class="fnehd-listing-search-field">
+            <div class="w-100 fnehd-listing-search-field">
                 <input id="search" type="text" placeholder="Type Keywords">
                 <div class="icon-wrap">
                     <svg class="svg-inline--fa fa-search fa-w-16" fill="#ccc" aria-hidden="true" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -69,64 +77,41 @@ $dropdown_options = [
         <!-- Dropdown Filters -->
         <form id="fnehd-listing-search-form">
             <div class="d-flex flex-wrap">
+            <?php foreach ($dropdown_options as $key => $dropdown): ?>
+				<div class="form-group col-md-4">
+					<div class="dropdown">
+						<button class="btn fnehd-btn-primary dropdown-toggle w-100" type="button" id="<?= $key; ?>Dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<?= $dropdown['label']; ?>
+						</button>
+						<div class="dropdown-menu w-100" aria-labelledby="<?= $key; ?>Dropdown">
+							<div class="px-3">
+								<?php foreach ($dropdown['items'] as $value => $label): ?>
+									<div class="form-check">
+										<input type="checkbox" name="<?= $key; ?>" id="<?= $value; ?>" value="<?= $value; ?>">
+										<label class="form-check-label" for="<?= $value; ?>"><?= $label; ?></label>
+									</div>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php endforeach; ?>
 
-                <?php foreach ($dropdown_options as $key => $dropdown): ?>
-                    <div class="form-group col-md-4">
-                        <div class="dropdown">
-                            <button class="btn fnehd-btn-secondary shadow-lg dropdown-toggle w-100" type="button" id="<?= $key; ?>Dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <?= $dropdown['label']; ?>
-                            </button>
-                            <div class="dropdown-menu w-100" aria-labelledby="<?= $key; ?>Dropdown">
-                                <div class="px-3">
-                                    <?php foreach ($dropdown['items'] as $value => $label): ?>
-                                        <div class="form-check">
-                                            <input type="checkbox" id="<?= $value; ?>" value="<?= $value; ?>">
-                                            <label class="form-check-label" for="<?= $value; ?>"><?= $label; ?></label>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-
-                <!-- Additional Filters -->
+                <!-- Number of Beds Dropdown -->
                 <div class="form-group col-md-4">
                     <div class="dropdown">
-                        <button class="btn fnehd-btn-secondary shadow-lg dropdown-toggle w-100" type="button" id="bedsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn fnehd-btn-primary shadow-lg dropdown-toggle w-100" type="button" id="bedsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Number of Beds
                         </button>
                         <div class="dropdown-menu w-100" aria-labelledby="bedsDropdown">
                             <div class="px-3">
-								 <div id="fnehd-beds-slider" class="fnehd-slider-container">
-									<input type="range" name="beds" class="fnehd-custom-slider" 
-									min="0" max="200" value="0" />
-									<div id="fnehd-beds-slider-val" class="fnehd-slider-value">50</div>
-								</div>
+                                <input type="number" id="beds" name="beds" class="form-control" min="0" max="200" value="0">
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group col-md-4">
-                    <div class="dropdown">
-                        <button class="btn fnehd-btn-secondary dropdown-toggle w-100" type="button" id="radiusDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Search Radius
-                        </button>
-                        <div class="dropdown-menu w-100" aria-labelledby="radiusDropdown">
-                            <div class="px-3">
-                                <div id="fnehd-radius-slider" class="fnehd-slider-container">
-									<input type="range" name="radius" class="fnehd-custom-slider" 
-									min="0" max="200" value="0" />
-									<div id="fnehd-radius-slider-val" class="fnehd-slider-value">50</div>
-								</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+				
             </div>
         </form>
     </div>
 </div>
-
-

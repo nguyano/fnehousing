@@ -112,6 +112,7 @@ class PublicEnqueue {
 			'unavailable_shelter_count' => fnehd_shelter_availability_count('Unavailable').__(' results', 'fnehousing'),
 			'available_shelters_rest_url' => esc_url_raw(rest_url('fnehousing/v1/available-listings')),
 			'unavailable_shelters_rest_url' => esc_url_raw(rest_url('fnehousing/v1/unavailable-listings')),
+			'shelters_search_rest_url' => esc_url_raw(rest_url('fnehousing/v1/shelter-search-listings')),
 			'default_shelter_img' => FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp",
 			'swal'  =>[
 

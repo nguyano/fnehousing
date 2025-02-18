@@ -15,7 +15,7 @@ defined('ABSPATH') || exit;
 
 class RestApiActions extends RestApiEndpoints{
 	
-	private $endpoints = ['allShelterListingEndpoint', 'availableShelterListingEndpoint', 'unavailableShelterListingEndpoint'];
+	private $endpoints = ['allShelterListingEndpoint', 'availableShelterListingEndpoint', 'unavailableShelterListingEndpoint', 'searchShelterListingEndpoint'];
 
     /**
      * Register hooks and REST API routes
