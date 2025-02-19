@@ -173,7 +173,7 @@ class SheltersActions extends ShelterDBManager {
 		//fnehd_validate_ajax_nonce('fnehd_shelter_update_nonce', 'update_nonce');
 
 		// Sanitize and prepare form data.
-		$form_fields = ['shelter_id', 'shelter_name', 'shelter_organization', 'email', 'phone', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
+		$form_fields = ['shelter_id', 'shelter_name', 'shelter_organization', 'email', 'phone', 'fax', 'website', 'address', 'address', 'manager', 'project_type', 'description', 'main_image', 'gallery', 'pet_policy', 'availability', 'bed_capacity', 'available_beds'];
 		$data = fnehd_sanitize_form_data($form_fields);
 		$data['hours'] = fnehd_sanitize_working_hours_form_data();
 		
