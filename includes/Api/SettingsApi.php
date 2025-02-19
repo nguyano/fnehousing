@@ -1,9 +1,8 @@
 <?php 
-
-
 /**
  * Settings Api Class
  * Defines all settings
+ *
  * @since      1.0.0
  * @package  Fnehousing
  */

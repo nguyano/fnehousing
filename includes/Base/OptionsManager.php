@@ -124,7 +124,7 @@ class OptionsManager extends OptionFields {
         foreach ($this->options as $option) {
             $constant = strtoupper('fnehd_' . $option['id']);
             $value = $saved_options[$option['id']];
-			$value = isset($value) ? $value : $option['default'];
+			$value = (!empty($value) || is_bool($value)) ? $value : $option['default'];
             defined($constant) || define($constant, $value);
         }
     }
