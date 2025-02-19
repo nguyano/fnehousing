@@ -2,10 +2,10 @@
 
 /*
  * Plugin Name: FNE Housing
- * Plugin URI: https://fnehousing.lechtech.net
- * Description: FNE Housing Dashboard Custom Plugin.
+ * Plugin URI: https://fnehousing.ngunyiyannick.com
+ * Description: UChealth FNE Housing Dashboard Custom Plugin.
  * Author: Ngunyi yannick
- * Author URI: https://www.lechtech.net
+ * Author URI: https://www.ngunyiyannick.com
  * Text Domain: fnehousing
  * Domain Path: /languages
  * Version: 1.0.0
@@ -46,5 +46,4 @@ if (class_exists('Fnehousing\\base\\Deactivator')) {
 if(class_exists('Fnehousing\\FnehdInit')){
   Fnehousing\FnehdInit::registerServices();
 }
-
 

@@ -1,13 +1,8 @@
-
-//Print Function
-function printDiv(divName){
-	var toPrint;
-	toPrint = window.open();
-	toPrint.document.write(document.getElementById(divName).innerHTML);
-	toPrint.print();
-	toPrint.close();
-}
-
+/**
+ * Plugin wide Js functions
+ * @since  1.0.0
+ * @package  Fnehousing
+*/
 
 // Bootstrap Choices - Multiple Select Input
 function multChoiceSelect({ selectID, data = [] }) {
@@ -646,9 +641,7 @@ async function initMap() {
 
 }
 
-/**
- * Convert an address to lat/lng using Google Geocoding API
- */
+// Convert an address to lat/lng using Google Geocoding API
 function geocodeAddress(geocoder, address) {
     return new Promise((resolve, reject) => {
         geocoder.geocode({ address: address }, (results, status) => {

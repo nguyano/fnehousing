@@ -3,6 +3,7 @@
 /**
  * Enqueues all the public-facing scripts of the plugin.
  * @since      1.0.0
+ *
  * @package    Fnehousing
  */
 
@@ -115,13 +116,13 @@ class PublicEnqueue {
         $params = [
             'ajaxurl'       => admin_url('admin-ajax.php'),
             'is_front_user' => fnehd_is_front_user() ? true : false,
-			'all_shelters_rest_url' => esc_url_raw(rest_url('fnehousing/v1/listings')),
+			'all_shelters_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/listings')),
 			'total_shelter_count' => fnehd_shelter_count().__(' results', 'fnehousing'),
 			'available_shelter_count' => fnehd_shelter_availability_count('Available').__(' results', 'fnehousing'), 
 			'unavailable_shelter_count' => fnehd_shelter_availability_count('Unavailable').__(' results', 'fnehousing'),
-			'available_shelters_rest_url' => esc_url_raw(rest_url('fnehousing/v1/available-listings')),
-			'unavailable_shelters_rest_url' => esc_url_raw(rest_url('fnehousing/v1/unavailable-listings')),
-			'shelters_search_rest_url' => esc_url_raw(rest_url('fnehousing/v1/shelter-search-listings')),
+			'available_shelters_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/available-listings')),
+			'unavailable_shelters_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/unavailable-listings')),
+			'shelters_search_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/shelter-search-listings')),
 			'default_shelter_img' => FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp",
 			'swal'  =>[
 

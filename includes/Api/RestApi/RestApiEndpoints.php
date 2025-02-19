@@ -23,47 +23,95 @@ class RestApiEndpoints {
 	 public function __construct() {
         $this->shelter = new ShelterDBManager();
     }
+	
      
     /**
      * Register REST API routes
      */
-    public function registerRoutes() {
-        register_rest_route(FNEHD_PLUGIN_NAME, '/fnehousing-endpoint-data', [
-            'methods'  => \WP_REST_Server::READABLE,
-            'callback' => [$this, 'getFnehousingEndpointData'],
-            'permission_callback' => [$this, 'validateApiKey'], // Validate API key
+    public function pluginBasicDataEndpoint() {
+        register_rest_route(FNEHD_PLUGIN_NAME.'/v1', '/basic-plugin-data', [
+            'methods'  => 'GET',
+            'callback' => [$this, 'getFnehousingEndpointData'], // Specify class method
+            'permission_callback' => function() {
+				return $this->checkApiAccess('plugin_basics'); //valid permission & authentication
+			},
         ]);
     }
 	public function allShelterListingEndpoint() {
-        register_rest_route('fnehousing/v1', '/listings', array(
+        register_rest_route(FNEHD_PLUGIN_NAME.'/v1', '/listings', [
             'methods' => 'POST',
-            'callback' => array($this, 'getAllShelterListings'), // Specify class method
-			'permission_callback' => '__return_true'
-        ));
+            'callback' => [$this, 'getAllShelterListings'], 
+			'permission_callback' => [$this, 'checkApiAccess']
+        ]);
     }
 	public function availableShelterListingEndpoint() {
-        register_rest_route('fnehousing/v1', '/available-listings', array(
+        register_rest_route(FNEHD_PLUGIN_NAME.'/v1', '/available-listings', [
             'methods' => 'POST',
-            'callback' => array($this, 'getAvailableShelterListings'),
-			'permission_callback' => '__return_true'
-        ));
+            'callback' => [$this, 'getAvailableShelterListings'],
+			'permission_callback' => [$this, 'checkApiAccess']
+        ]);
     }
 	public function unavailableShelterListingEndpoint() {
-        register_rest_route('fnehousing/v1', '/unavailable-listings', array(
+        register_rest_route(FNEHD_PLUGIN_NAME.'/v1', '/unavailable-listings', [
             'methods' => 'POST',
-            'callback' => array($this, 'getUnavailableShelterListings'), 
-			'permission_callback' => '__return_true'
-        ));
+            'callback' => [$this, 'getUnavailableShelterListings'], 
+			'permission_callback' => [$this, 'checkApiAccess']
+        ]);
     }
 	
 	public function searchShelterListingEndpoint() {
-        register_rest_route('fnehousing/v1', '/shelter-search-listings', array(
-            'methods' => 'POST',
-            'callback' => array($this, 'getSearchShelterListings'), 
-			'permission_callback' => '__return_true'
-        ));
-    }
+		register_rest_route(FNEHD_PLUGIN_NAME . '/v1', '/shelter-search-listings', [
+			'methods' => 'POST',
+			'callback' => [$this, 'getSearchShelterListings'],
+			'permission_callback' => [$this, 'checkApiAccess']
+		]);
+	}
 	
+	
+	/**
+	 * Checks if API key validation is required or bypassed, and if requested data is restricted.
+	 *
+	 * @param string $data_type The type of data being accessed.
+	 * @return bool|\WP_Error True if access is granted, otherwise WP_Error.
+	 */
+	public function checkApiAccess($data_type = 'shelters') {
+		// Allow internal requests
+		if ($this->isInternalRequest()) {
+			return true;
+		}
+
+		// Filter allowed data types
+		$data_types = FNEHD_REST_API_DATA;
+		if (!in_array($data_type, $data_types)) {
+			return new \WP_Error('missing_api_key', __('Access to requested data has been restricted.', 'fnehousing'), ['status' => 403]);
+		}
+
+		// Allow open access if API key feature is disabled
+		if (!defined('FNEHD_ENABLE_REST_API_KEY') || !FNEHD_ENABLE_REST_API_KEY) {
+			return true;
+		}
+
+		return $this->validateApiKey();
+	}
+
+
+	/**
+	 * Check if the request is coming from the same domain (internal request).
+	 *
+	 * @return bool True if internal request, false otherwise.
+	 */
+	protected function isInternalRequest() {
+		// Get the server's hostname
+		$server_host = parse_url(home_url(), PHP_URL_HOST);
+
+		// Get the requesting host
+		$request_host = $_SERVER['HTTP_HOST'] ?? '';
+
+		// Check if request comes from the same domain
+		return $server_host === $request_host;
+	}
+
+		
 	
 	/**
 	 *get shelter listings based availability state
@@ -135,25 +183,17 @@ class RestApiEndpoints {
 	
 
     /**
-     * Retrieve plugin data for the REST API endpoint
+     * Retrieve basic plugin data
      * 
      * @param \WP_REST_Request $request The REST API request object.
      * @return array|\WP_Error The response data or an error.
      */
-    public function getFnehousingEndpointData(\WP_REST_Request $request) {
+    public function getBasicPluginData(\WP_REST_Request $request) {
         $data = [
             'plugin_name'    => FNEHD_PLUGIN_NAME,
             'plugin_version' => FNEHD_VERSION,
-            'plugin_cat'     => 'Housing & Real Estate',
-            'downloads'      => 500,
+            'plugin_cat'     => 'Ngunyi Yannick'
         ];
-
-        // Filter allowed data keys
-        $allowed_keys = FNEHD_REST_API_DATA;
-        $data = array_filter($data, function ($key) use ($allowed_keys) {
-            return in_array($key, $allowed_keys, true);
-        }, ARRAY_FILTER_USE_KEY);
-
         return rest_ensure_response($data);
     }
 	
@@ -162,9 +202,12 @@ class RestApiEndpoints {
      * Generate a new REST API key for the current user
      */
     public function generateRestApiKey() {
-        // Ensure API Key functionality is enabled
-        if (!(defined('FNEHD_ENABLE_REST_API_KEY') && FNEHD_ENABLE_REST_API_KEY)) {
-            wp_send_json_error(['message' => __('API Key functionality is disabled.', 'fnehousing')], 403);
+		// Check user's permission
+		fnehd_verify_permissions('manage_options');
+		
+        // Ensure REST API functionality is enabled
+        if (!(defined('FNEHD_ENABLE_REST_API') && FNEHD_ENABLE_REST_API)) {
+            wp_send_json_error(['message' => __('REST API functionality is disabled. Make sure "Share Data via REST API" is enabled.', 'fnehousing')]);
         }
 
         // Ensure the request is valid
@@ -186,54 +229,50 @@ class RestApiEndpoints {
      * Generate a REST API endpoint URL
      */
     public function generateRestApiUrl() {
-        // Ensure API Key functionality is enabled
-        if (!(defined('FNEHD_ENABLE_REST_API_KEY') && FNEHD_ENABLE_REST_API_KEY)) {
-            wp_send_json_error(['message' => __('API Key functionality is disabled.', 'fnehousing')], 403);
+		// Check user's permission
+		fnehd_verify_permissions('manage_options');
+		
+        // Ensure REST API functionality is enabled
+        if (!(defined('FNEHD_ENABLE_REST_API') && FNEHD_ENABLE_REST_API)) {
+            wp_send_json_error(['message' => __('REST API functionality is disabled. Make sure "Share Data via REST API" is enabled.', 'fnehousing')]);
         }
-
-        // Ensure the request is valid
-        if (!current_user_can('edit_user', get_current_user_id())) {
-            wp_send_json_error(['message' => __('Unauthorized', 'fnehousing')], 403);
-        }
-
-        $url = home_url('/wp-json/' . FNEHD_PLUGIN_NAME . '/fnehousing-endpoint-data');
+		
+		$urls = "";
+		$rest_urls = [
+			'Basic Plugin data' => 'basic-plugin-data', 
+			'All Shelter Data' => 'listings', 
+			'Available Shelter Data' => 'available-listings', 
+			'Unavailable Shelter Data' => 'unavailable-listings', 
+			'User Data' => 'user-data'
+		];
+		
+		foreach($rest_urls as $title => $url){		
+			$url_data .= $title.': '. home_url('/wp-json/' . FNEHD_PLUGIN_NAME . '/v1/'.$url).', '. PHP_EOL/*next line*/;
+		}
         wp_send_json_success([
-            'message' => __('URL generated successfully.', 'fnehousing'),
-            'url'     => $url,
+            'message' => __('URLs generated successfully.', 'fnehousing'),
+            'url'  => $url_data,
         ]);
     }
+	
 
-    /**
-     * Validate the API key for REST API requests
-     * 
-     * @param \WP_REST_Request $request The REST API request object.
-     * @return bool|\WP_Error True if valid, or WP_Error otherwise.
-     */
-    public function validateApiKey(\WP_REST_Request $request) {
-        // Ensure API Key functionality is enabled
-        if (!(defined('FNEHD_ENABLE_REST_API_KEY') && FNEHD_ENABLE_REST_API_KEY)) {
-            return new \WP_Error('api_key_disabled', __('API key functionality is disabled.', 'fnehousing'), ['status' => 403]);
-        }
+   /**
+	 * Validate the API key for REST API requests.
+	 *
+	 * @param \WP_REST_Request $request The REST API request object.
+	 * @return bool|\WP_Error True if valid, or WP_Error otherwise.
+	 */
+	public function validateApiKey(\WP_REST_Request $request) {
+		
+		// Retrieve API key from the request headers
+		$api_key = $request->get_header('X-API-Key');
 
-        $api_key = $request->get_header('X-API-Key');
+		if (empty($api_key) || $api_key !== FNEHD_REST_API_KEY) {
+			return new \WP_Error('invalid_api_key', __('Invalid API key.', 'fnehousing'), ['status' => 403]);
+		}
 
-        if (empty($api_key)) {
-            return new \WP_Error('missing_api_key', __('API key is required.', 'fnehousing'), ['status' => 403]);
-        }
-
-        $user_query = get_users([
-            'meta_key'   => 'api_key',
-            'meta_value' => $api_key,
-            'number'     => 1,
-            'fields'     => 'ID',
-        ]);
-
-        if (empty($user_query)) {
-            return new \WP_Error('invalid_api_key', __('Invalid API key.', 'fnehousing'), ['status' => 403]);
-        }
-
-        return true;
-    }
+		return true;
+	}
 
 	
 

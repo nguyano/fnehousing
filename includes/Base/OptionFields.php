@@ -299,10 +299,10 @@ class OptionFields {
 				'default'     =>  ''
 			],
 
-			//User Emails
+			//Shelter Organization Emails
             [
 				'id'          =>  'user_new_shelter_email_subject',
-				'title'       =>  __("User New Shelter Email Subject", "fnehousing"),
+				'title'       =>  __("Shelter Organization - New Shelter Email Subject", "fnehousing"),
 				'callback'    =>  'textField',
 				'page'        =>  'fnehousing_user_shelter_email',
 				'section'     =>  'fnehd_user_shelter_email_settings',
@@ -315,7 +315,7 @@ class OptionFields {
 
 			[
 				'id'          =>  'user_new_shelter_email_body',
-				'title'       =>  __("User New Shelter Email Body", "fnehousing"),
+				'title'       =>  __("Shelter Organization -  New Shelter Email Body", "fnehousing"),
 				'callback'    =>  'textareaField',
 				'page'        =>  'fnehousing_user_shelter_email',
 				'section'     =>  'fnehd_user_shelter_email_settings',
@@ -329,7 +329,7 @@ class OptionFields {
 
 			[
 				'id'          =>  'user_new_shelter_email_footer',
-				'title'       =>  __("User New Shelter Email Footer", "fnehousing"),
+				'title'       =>  __("Shelter Organization - New Shelter Email Footer", "fnehousing"),
 				'callback'    =>  'textareaField',
 				'page'        =>  'fnehousing_user_shelter_email',
 				'section'     =>  'fnehd_user_shelter_email_settings',
@@ -443,7 +443,7 @@ class OptionFields {
 				'description' =>  __("Choose a primary colour to match your brand or website", "fnehousing"),
 				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
 				'icon'        =>  'code',
-				'default'     =>  '#ff5604'
+				'default'     =>  '#a60900'
 			],
 
 			[
@@ -456,7 +456,7 @@ class OptionFields {
 				'description' =>  __("Choose a secondary colour to match your brand or website", "fnehousing"),
 				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
 				'icon'        =>  'code',
-				'default'     =>  '#8080ff'
+				'default'     =>  '#3361b5'
 			],
 
 			[
@@ -583,15 +583,15 @@ class OptionFields {
             // Advanced Options
             [
 				'id'          =>  'enable_rest_api',
-				'title'       =>  __("Share Shelter Data via REST API?", "fnehousing"),
+				'title'       =>  __("Share Data via REST API?", "fnehousing"),
 				'callback'    =>  'checkboxField',
 				'page'        =>  'fnehousing_advanced',
 				'section'     =>  'fnehd_advanced_settings',
 				'placeholder' =>  "",
-				'description' =>  __("Want to send plugin REST API Endpoint data through HTTPS Request?", "fnehousing"),
+				'description' =>  __("Allow REST API Endpoint requests", "fnehousing"),
 				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
 				'icon'        =>  'share-nodes',
-				'default'     =>  false
+				'default'     =>  true
 			],
 
 			[
@@ -604,7 +604,7 @@ class OptionFields {
 				'description' =>  __("Want to authenticate REST API Endpoint data request with a key?", "fnehousing"),
 				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
 				'icon'        =>  'key',
-				'default'     =>  false
+				'default'     =>  true
 			],
 
 			[
@@ -614,20 +614,20 @@ class OptionFields {
 				'page'        =>  'fnehousing_advanced',
 				'section'     =>  'fnehd_advanced_settings',
 				'placeholder' =>  "",
-				'description' =>  __("Create API key for REST API endpoint authentication. Block unauthorized access to plugin REST API data.", "fnehousing"),
+				'description' =>  __("Create API key for REST API endpoint authentication. Share key only with authorized persons for access to plugin REST API data.", "fnehousing"),
 				'divclasses'  =>  'col-md-12 card shadow-lg p-3',
 				'icon'        =>  'key',
 				'default'     =>  ''
 			],
 
 			[
-				'id'          =>  'rest_api_enpoint_url',
-				'title'       =>  __("REST API Endpoint URL", "fnehousing"),
-				'callback'    =>  'textField',
+				'id'          =>  'rest_api_endpoint_urls',
+				'title'       =>  __("REST API Endpoint URLs", "fnehousing"),
+				'callback'    =>  'textareaField',
 				'page'        =>  'fnehousing_advanced',
 				'section'     =>  'fnehd_advanced_settings',
 				'placeholder' =>  "",
-				'description' =>  __("REST API custom Endpoint URL. Do not share with unauthorized users!", "fnehousing"),
+				'description' =>  __("REST API custom Endpoint URLs. Do not share with unauthorized users!", "fnehousing"),
 				'divclasses'  =>  'col-md-12 card shadow-lg p-3',
 				'icon'        =>  'link',
 				'default'     =>  ''
@@ -635,7 +635,7 @@ class OptionFields {
 
 			[
 				'id'          =>  'rest_api_data',
-				'title'       =>  __("Select Shelter Data to Share Via REST API", "fnehousing"),
+				'title'       =>  __("Select Data Type to Share Via REST API", "fnehousing"),
 				'callback'    =>  'multSelectField',
 				'page'        =>  'fnehousing_advanced',
 				'section'     =>  'fnehd_advanced_settings',
@@ -704,7 +704,7 @@ class OptionFields {
 			],
 			[
 				'id'    => 'fnehd_user_shelter_email_settings',
-				'title' => __('Front User Email Settings', 'fnehousing'),
+				'title' => __('Shelter Organization Email Settings', 'fnehousing'),
 				'page'  => 'fnehousing_user_shelter_email'
 			],
 			[
@@ -739,7 +739,7 @@ class OptionFields {
      * @return string
      */
     private static function defaultUserNewShelterEmailBody() {
-        return __('<p>Hello,</p><p>Thank you for adding your shelter. Your shelter has been successfully created and is now active.</p>', 'fnehousing');
+        return __('<p>Hello,<br></p><p>Thank you for adding your shelter. Your shelter has been successfully created and is now active.</p>', 'fnehousing');
     }
 
     /**

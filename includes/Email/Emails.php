@@ -68,29 +68,29 @@ function fnehd_process_emails($emails, $trans) {
 /**
  * New Shelter Notification Email.
  */
-function fnehd_new_shelter_email($ref_id, $status, $earner, $amount, $earner_email, $title, $details) {
+function fnehd_new_shelter_email($ref_id, $shelter_name, $shelter_organization, $phone, $website, $email, $address) {
     $trans = array(
         '{ref-id}'       => $ref_id,
-        '{status}'       => $status,
-        '{earner}'       => $earner,
-        '{amount}'       => $amount,
-        '{earner_email}' => $earner_email,
-        '{title}'        => $title,
-        '{details}'      => $details,
+		'{shelter_name}' => $shelter_name,
+		'{shelter_organization}' => $shelter_organization,
+		'{shelter_phone}' => $phone,
+        '{shelter_website}' => $website,
+		'{shelter_email}' => $email,
+		'{shelter_address}' => $address,
         '{current-year}' => date('Y'),
         '{site-title}'   => get_bloginfo('name'),
         '{company-address}' => FNEHD_COMPANY_ADDRESS,
     );
 
     $emails = array(
-        "admin" => array(
+        "admin" => array(//notify admin
             "to"      => FNEHD_COMPANY_EMAIL,
             "subject" => FNEHD_ADMIN_NEW_SHELTER_EMAIL_SUBJECT,
             "body"    => FNEHD_ADMIN_NEW_SHELTER_EMAIL_BODY,
             "is_on"   => FNEHD_ADMIN_NEW_SHELTER_EMAIL,
         ),
-        "user" => array(
-            "to"      => $earner_email,
+        "user" => array(//notify shelter
+            "to"      => $email,
             "subject" => FNEHD_USER_NEW_SHELTER_EMAIL_SUBJECT,
             "body"    => FNEHD_USER_NEW_SHELTER_EMAIL_BODY,
             "is_on"   => FNEHD_USER_NEW_SHELTER_EMAIL,
@@ -98,138 +98,6 @@ function fnehd_new_shelter_email($ref_id, $status, $earner, $amount, $earner_ema
     );
 
     fnehd_process_emails($emails, $trans);
-}
-
-
-/**
- * New Milestone Notification Email.
- */
-function fnehd_new_milestone_email($ref_id, $status, $earner, $amount, $earner_email, $title, $details) {
-    $trans = array(
-        '{ref-id}'       => $ref_id,
-        '{status}'       => $status,
-        '{earner}'       => $earner,
-        '{amount}'       => $amount,
-        '{earner_email}' => $earner_email,
-        '{title}'        => $title,
-        '{details}'      => $details,
-        '{current-year}' => date('Y'),
-        '{site-title}'   => get_bloginfo('name'),
-        '{company-address}' => FNEHD_COMPANY_ADDRESS,
-    );
-
-    $emails = array(
-        "admin" => array(
-            "to"      => FNEHD_COMPANY_EMAIL,
-            "subject" => FNEHD_ADMIN_NEW_MILESTONE_EMAIL_SUBJECT,
-            "body"    => FNEHD_ADMIN_NEW_MILESTONE_EMAIL_BODY,
-            "is_on"   => FNEHD_ADMIN_NEW_MILESTONE_EMAIL,
-        ),
-        "user" => array(
-            "to"      => $earner_email,
-            "subject" => FNEHD_USER_NEW_MILESTONE_EMAIL_SUBJECT,
-            "body"    => FNEHD_USER_NEW_MILESTONE_EMAIL_BODY,
-            "is_on"   => FNEHD_USER_NEW_MILESTONE_EMAIL,
-        ),
-    );
-
-    fnehd_process_emails($emails, $trans);
-}
-
-
-
-// Payment Rejection Email
-function fnehd_pay_rejected_email($ref_id, $earner, $shelter_title, $payer, $amount, $payer_email) {
-    $footer = fnehd_get_email_footer();
-
-    $admin_body = sprintf(
-        '%s %s %s %s %s: %s.',
-        esc_html($earner),
-        esc_html__('rejected payment for', 'fnehousing'),
-        esc_html($shelter_title),
-        esc_html__('made by', 'fnehousing'),
-        esc_html($payer),
-        esc_html($amount)
-    ) . $footer;
-
-    $user_body = sprintf(
-        '%s %s %s: %s.',
-        esc_html($shelter_title),
-        esc_html__('was rejected by', 'fnehousing'),
-        esc_html($earner),
-        esc_html($amount)
-    ) . $footer;
-
-    fnehd_send_email(FNEHD_COMPANY_EMAIL, __('Shelter Payment Rejected', 'fnehousing') . " ({$ref_id})", $admin_body);
-    fnehd_send_email($payer_email, __('Shelter Payment Rejected', 'fnehousing') . " ({$ref_id})", $user_body);
-}
-
-// Payment Released Email
-function fnehd_pay_released_email($ref_id, $payer, $shelter_title, $earner, $amount, $earner_email) {
-    $footer = fnehd_get_email_footer();
-
-    $admin_body = sprintf(
-        '%s %s %s %s %s: %s.',
-        esc_html($payer),
-        esc_html__('released payment for', 'fnehousing'),
-        esc_html($shelter_title),
-        esc_html__('to', 'fnehousing'),
-        esc_html($earner),
-        esc_html($amount)
-    ) . $footer;
-
-    $user_body = sprintf(
-        '%s %s %s: %s.',
-        esc_html__('Shelter amount released by', 'fnehousing'),
-        esc_html($payer),
-        esc_html__('Released amount', 'fnehousing'),
-        esc_html($amount)
-    ) . $footer;
-
-    fnehd_send_email(FNEHD_COMPANY_EMAIL, __('Shelter Payment Released', 'fnehousing') . " ({$ref_id})", $admin_body);
-    fnehd_send_email($earner_email, __('Shelter Payment Released', 'fnehousing') . " ({$ref_id})", $user_body);
-}
-
-// Deposit Notification Email
-function fnehd_user_deposit_email($ref_id, $username, $amount, $user_email) {
-    $footer = fnehd_get_email_footer();
-
-    $admin_body = sprintf(
-        '%s %s %s.',
-        esc_html($username),
-        esc_html__('made a deposit of', 'fnehousing'),
-        esc_html($amount)
-    ) . $footer;
-
-    $user_body = sprintf(
-        '%s %s.',
-        esc_html__('You deposited ', 'fnehousing'),
-        esc_html($amount)
-    ) . $footer;
-
-    fnehd_send_email(FNEHD_COMPANY_EMAIL, __('User Deposit', 'fnehousing') . " ({$ref_id})", $admin_body);
-    fnehd_send_email($user_email, __('User Deposit', 'fnehousing') . " ({$ref_id})", $user_body);
-}
-
-// User Withdrawal Notification Email
-function fnehd_user_withdrawal_email($ref_id, $username, $amount, $user_email) {
-    $footer = fnehd_get_email_footer();
-
-    $admin_body = sprintf(
-        '%s %s %s.',
-        esc_html($username),
-        esc_html__('made a withdrawal of ', 'fnehousing'),
-        esc_html($amount)
-    ) . $footer;
-
-    $user_body = sprintf(
-        '%s %s.',
-        esc_html__('You made a withdrawal of ', 'fnehousing'),
-        esc_html($amount)
-    ) . $footer;
-
-    fnehd_send_email(FNEHD_COMPANY_EMAIL, __('User Withdrawal', 'fnehousing') . " ({$ref_id})", $admin_body);
-    fnehd_send_email($user_email, __('User Withdrawal', 'fnehousing') . " ({$ref_id})", $user_body);
 }
 
 

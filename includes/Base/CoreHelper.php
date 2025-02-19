@@ -580,12 +580,12 @@ function fnehd_stat_box($id, $count, $sub, $sub_s, $col_class, $color, $icon, $t
 function fnehd_merge_tags_table() {
     $columns = [
         ["Shelter Ref ID", "{ref-id}"],
-        ["Escow Status", "{status}"],
-        ["Shelter Earner", "{earner}"],
-        ["Shelter Amount", "{amount}"],
-        ["Shelter Payer", "{payer}"],
-        ["Shelter Title", "{title}"],
-        ["Shelter Details", "{details}"],
+        ["Shelter Name", "{selter_name}"],
+        ["Shelter organization", "{shelter_organization}"],
+        ["Shelter Phone", "{shelter_phone}"],
+        ["Shelter website", "{shelter_website}"],
+        ["Shelter Email", "{shelter_email}"],
+        ["Shelter Address", "{shelter_address}"],
         ["Current Year", "{current-year}"],
         ["Website Title", "{site-title}"],
         ["Company Address", "{company-address}"],

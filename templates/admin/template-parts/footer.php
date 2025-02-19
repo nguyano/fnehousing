@@ -12,7 +12,7 @@
 				<ul class="nav nav-footer justify-content-center justify-content-lg-end">
 				<li class="nav-item">
 				<a href="admin.php?page=fnehousing-dashboard" class="nav-link text-muted" target="_blank">
-				<?= __("Fnehousing - Safe Peer-to-Peer Shelter Payment Plugin", "fnehousing"); ?></a>
+				<?= __("UChealth FNE Housing Dashboard Custom Plugin.", "fnehousing"); ?></a>
 				</li>
 				</ul>
 			</div>

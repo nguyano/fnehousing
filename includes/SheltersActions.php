@@ -144,29 +144,22 @@ class SheltersActions extends ShelterDBManager {
 
 		// Insert shelter and related meta data.
 		$this->insertData($this->tables->shelters, $data);
-
+		
+		$shelter_id = $this->getLastInsertedShelterID();//get last inserted shelter_id
+		
 		// Log and notify.
-		/* fnehd_log_notify_new_shelter(
-			fnehd_unique_id(),
-			$data['payer'],
-			$data['earner'],
-			$meta_data['amount'],
-			$new_balance,
-			$user_id,
-			$shelter_id,
-			$data['ref_id']
-		);
-
+		fnehd_log_notify_new_shelter($data['ref_id'], $shelter_id);
 		fnehd_new_shelter_email(
-			$data['ref_id'],
-			$meta_data['status'],
-			$data['earner'],
-			$amount,
-			$user->user_email,
-			$meta_data['title'],
-			$meta_data['details']
+			$data['ref_id'], 
+			$data['shelter_name'], 
+			$data['shelter_organization'], 
+			$data['phone'], 
+			$data['website'], 
+			$data['email'], 
+			$data['address']
 		);
-		*/
+			
+		
 		// Send success response.
 		wp_send_json_success(['message' => __('Shelter added successfully', 'fnehousing'), 'shelter_id' => $this->getLastInsertedShelterID(), 'data' => $data['eligible_individuals']]);
 	}

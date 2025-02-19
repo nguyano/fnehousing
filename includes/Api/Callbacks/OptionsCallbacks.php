@@ -169,10 +169,10 @@ class OptionsCallbacks extends OptionFields {
 					   data-content="' . $description . '" title="" data-original-title="Help here">Info</a>';
 
 		// Render special call to action buttons
-		$btns = ['rest_api_key', 'rest_api_enpoint_url', 'blockonomics_api_key'];
+		$btns = ['rest_api_key', 'rest_api_endpoint_url', 'google_api_key'];
 		foreach ($btns as $btn) {
-			$href = $btn ==='blockonomics_api_key'? 'https://www.blockonomics.co/api/' : '#';
-			$prefix = $btn ==='blockonomics_api_key'? 'Get a ' : 'Generate ';
+			$href = $btn ==='google_api_key'? 'https://cloud.google.com/maps-platform' : '#';
+			$prefix = $btn ==='google_api_key'? 'Get a ' : 'Generate new ';
 			$end = explode('_', $btn);
 			$tle = $prefix.end($end);
 			if ($name === $btn) {
@@ -215,8 +215,24 @@ class OptionsCallbacks extends OptionFields {
 							   <i class="fas fa-' . $icon . ' sett-icon"></i>&nbsp;' . $option_title . '
 						   </span>
 						   <a class="infopop" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="right" 
-							  data-content="' . $description . '" title="" data-original-title="Help here">Info</a>
-					   </label>
+							  data-content="' . $description . '" title="" data-original-title="Help here">Info</a>';
+
+							// Render special call to action buttons
+							$btns = ['rest_api_endpoint_urls'];
+							foreach ($btns as $btn) {
+								$prefix = 'Generate ';
+								$end = explode('_', $btn);
+								$tle = $prefix.end($end);
+								if ($name === $btn) {
+									$output .= '<a type="button" id="fnehd_' . $btn . '_generator" href="#"
+											 class="btn btn-round btn-outline-info fnehd-btn-sm w-auto ml-3 upper-case">
+											 ' . esc_html($tle) . '
+										  </a>';
+								}
+							}
+
+					// Close the label and add the input field
+					$output .= '</label>
 					   <textarea class="form-control pl-4 ' . $inpclasses . '" id="' . $name . '" name="' . $option_name . '[' . $name . ']" 
 								 placeholder="' . $placeholder . '" rows="10">' . esc_textarea($value[$name] ?? '') . '</textarea>
 				   </div>';
@@ -397,13 +413,9 @@ class OptionsCallbacks extends OptionFields {
 
 	public function rest_api_data_options($selected_value = '') {
 		$options = [
-			'plugin_version'     => 'Plugin Version',
-			'plugin_name'        => 'Plugin Name',
-			'plugin_developer'   => 'Plugin Developer',
-			'shelters'            => 'Total Shelters',
-			'users'              => 'Total Users',
-			'earners'            => 'Total Earners',
-			'payers'             => 'Total Payers'
+			'plugin_basics'     => 'Plugin Basics (Version, Name, Developer)',
+			'shelters'          => 'Shelters Data',
+			'users'             => 'Users Data'
 		];
 		$this->renderMultOptions($options, $selected_value);
 	}
@@ -420,76 +432,5 @@ class OptionsCallbacks extends OptionFields {
     }
 	
 	
-	public function dispute_fees_options($selected_value = '') {
-		$options = [
-			'no_fee'     => 'No fee',
-			'fixed_fee'  => 'Fixed Fee',
-			'percentage' => 'Percentage'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
-	
-	public function commission_mode_options($selected_value = '') {
-		$options = [
-			'fixed_fee'  => 'Fixed Fee',
-			'percentage' => 'Percentage',
-			'percentage_amount' => 'Percentage & Fixed Fee'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
-	
-	public function commission_tax_mode_options($selected_value = '') {
-		$this->commission_mode_options($selected_value);
-	}
-	
-	public function shelter_fee_mode_options($selected_value = '') {
-		$this->commission_mode_options($selected_value);
-	}
-	
-	public function commission_payment_point_options($selected_value = '') {
-		$options = [
-			'end'   => 'End of Shelter Transaction',
-			'start' => 'When Placing Shelter Order'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
-	
-	
-	public function commission_payer_options($selected_value = '') {
-		$options = [
-			'payer'   => 'Payer (Buyer)',
-			'earner'  => 'Earner (Seller)',
-			'both'    => 'Both (Payer & Earner)'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
-	
-	public function dispute_initiator_options($selected_value = '') {
-		$this->commission_payer_options($selected_value);
-	}
-	
-	public function dispute_time_options($selected_value = '') {
-		$options = [
-			'any_time'=> 'Any Time',
-			'24'   => '1 day after Shelter Order',
-			'48'   => '2 day after Shelter Order',
-			'72'  =>  '3 days after Shelter Order',
-			'120'  => '5 days after Shelter Order',
-			'168'  => '7 days after Shelter Order'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
-	
-	public function dispute_evidence_file_types_options($selected_value = '') {
-		$options = [
-			'image/jpeg'      => 'Image/jpeg',
-			'image/png'       => 'Image/png',
-			'application/pdf' => 'Pdf',
-			'application/msword' => 'MS Word', 
-			'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'MS Excel(xls)',
-			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'MS Excel (xlsx)'
-		];
-		$this->renderOptions($options, $selected_value);
-	}
 
 }

@@ -146,7 +146,7 @@ jQuery(document).ready(function($) {
     });
 
     // Generate REST API Key & URL
-    const ids = ["rest_api_key", "rest_api_enpoint_url"];
+    const ids = ["rest_api_key", "rest_api_endpoint_urls"];
     ids.forEach(ID => {
         $("body").on("click", "#fnehd_" + ID + "_generator", function(e) {
             e.preventDefault();
@@ -154,7 +154,7 @@ jQuery(document).ready(function($) {
 
             $.post(ajaxurl, data, function(response) {
                 if (response.success) {
-                    if (ID === 'rest_api_enpoint_url') {
+                    if (ID === 'rest_api_endpoint_urls') {
                         let api_key = $('#rest_api_key').val();
                         $('#' + ID).val(response.data.url); // Append API key to the URL
                     } else {
@@ -210,6 +210,7 @@ jQuery(document).ready(function($) {
         // Check if setting is "ON" and perform other actions
 		fnehdUpdateToggle(response.smtp_protocol, 'smtp_protocol', 'fnehd-smtp-settings-options');
 		fnehdUpdateToggle(response.auto_dbackup, 'auto_dbackup', 'fnehd_auto_dbackup_freq_option');
+		fnehdUpdateToggle(response.enable_rest_api_key, 'enable_rest_api_key', 'fnehd_rest_api_key_option');
 		
     });
 	
@@ -246,32 +247,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // Force "Bitcoin Payment option to false if no API Key is Provided
-    $('body').on('click', '#enable_bitcoin_payment', function() {
-        if ($('#blockonomics_api_key').val() === "") {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Blockonomics API Key Required!',
-                text: "Blockonomics API Key is Required to Enable this feature. Please fill in the Required Field to Continue",
-            });
-            $('#enable_bitcoin_payment').prop('checked', false);
-            $('#enable_bitcoin_payment_on_off').html('<b class="toggleOff">'+fnehd.swal.success.checkbox_off_text+'</b>');
-        } else {
-            if ($('#enable_bitcoin_payment')[0].checked === true) {
-                $('#enable_bitcoin_payment_on_off').html('<b class="toggleOn">'+fnehd.swal.success.checkbox_on_text+'</b>');
-            } else {
-                $('#enable_bitcoin_payment_on_off').html('<b class="toggleOff">'+fnehd.swal.success.checkbox_off_text+'</b>');
-            }
-        }
-    });
-
-    $('#blockonomics_api_key').on('blur', function() {
-        if ($('#blockonomics_api_key').val() === '' && $('#enable_bitcoin_payment')[0].checked === true) {
-            $('#enable_bitcoin_payment').prop('checked', false);
-            $('#enable_bitcoin_payment_on_off').html('<b class="toggleOff">'+fnehd.swal.success.checkbox_off_text+'</b>');
-        }
-    });
-
     // Show/hide SMTP password
     $('#toggleSmtpPass').on('click', function() {
         var passInput = $("#SMTPPass");
@@ -287,7 +262,7 @@ jQuery(document).ready(function($) {
 
     // If switch is on (On click), add toggleOn class, else add toggleOff class
     var options = [
-        'user_new_shelter_email', 'user_new_milestone_email', 'admin_new_shelter_email', 'admin_new_milestone_email', 'notify_admin_by_email', 'fold_wp_menu', 'fold_fnehd_menu', 'theme_class', 'dbackup_log', 'enable_paypal_payment', 'enable_rest_api', 'enable_rest_api_key', 'enable_dispute_evidence', 'enable_commissions_tax', 'enable_max_commission', 'enable_min_commission', 'enable_commissions_transparency', 'enable_commissions', 'enable_invoice_logo'
+        'user_new_shelter_email', 'admin_new_shelter_email', 'notify_admin_by_email', 'fold_wp_menu', 'fold_fnehd_menu', 'theme_class', 'dbackup_log', 'enable_rest_api', 'enable_rest_api_key', 
     ];
 
     for (var i = 0; i < options.length; i++) {
@@ -318,6 +293,8 @@ jQuery(document).ready(function($) {
 	fnehdCheckToggle({inputId: 'smtp_protocol', optionsContainerId: 'fnehd-smtp-settings-options'});
 	//show smtp protocol settings if on
 	fnehdCheckToggle({inputId: 'auto_dbackup', optionsContainerId: 'fnehd_auto_dbackup_freq_option'});
+	//show rest api key settings if on
+	fnehdCheckToggle({inputId: 'enable_rest_api_key', optionsContainerId: 'fnehd_rest_api_key_option'});
 	
 
     // Company Logo File uploader
