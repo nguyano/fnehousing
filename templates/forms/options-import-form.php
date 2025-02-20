@@ -24,7 +24,7 @@
 	    </div><br><br>
 	    <button type="submit" class="btn fnehd-btn-primary" id="imp_options_btn">
 	    <?= __("Import Options", "fnehousing"); ?></button>
-	    <?php if(FNEHD_PLUGIN_INTERACTION_MODE == "modal"){ ?>
+	    <?php if(FNEHD_INTERACTION_MODE == "modal"){ ?>
 		   <button type="button" class="btn btn-default" data-dismiss="modal">
 		   <?= __("Cancel", "fnehousing"); ?></button>
 		<?php } else { ?>

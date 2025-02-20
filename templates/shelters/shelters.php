@@ -24,7 +24,7 @@ $dialogs = [
         'id'       => 'fnehd-edit-shelter-form-dialog',
         'data_id'  => '',
         'header'   => '',
-        'title'    => __("Update Shelter", "fnehousing"),
+        'title'    => __("Update Shelter", "fnehousing") . ' [<span class="small" id="CrtEditShelterName"></span>]',
         'callback' => 'edit-shelter-form.php',
         'type'     => 'edit-form'
     ]
@@ -36,7 +36,7 @@ $dialogs = [
 
     <!-- Add Shelter Button -->
     <button type="button" class="btn btn-icon-text shadow-lg fnehd-btn-white addShelter"
-        <?php if (defined('FNEHD_PLUGIN_INTERACTION_MODE') && FNEHD_PLUGIN_INTERACTION_MODE === "modal") { ?>
+        <?php if (defined('FNEHD_INTERACTION_MODE') && FNEHD_INTERACTION_MODE === "modal") { ?>
             data-toggle="modal" data-target="#fnehd-add-shelter-modal"
         <?php } else { ?>
             data-toggle="collapse" data-target="#fnehd-add-shelter-form-dialog"

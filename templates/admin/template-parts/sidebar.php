@@ -25,7 +25,7 @@
             <?php if (!empty($menus)) : ?>
                 <?php foreach ($menus as $menu) : ?>
                     <li class="nav-item <?= esc_attr($menu['li-classes']); ?>" id="<?= esc_attr($menu['li-id']); ?>">
-                        <?php if ($menu['li-id'] === 'FnehdSettMenuItem' && FNEHD_PLUGIN_INTERACTION_MODE === 'modal') : ?>
+                        <?php if ($menu['li-id'] === 'FnehdSettMenuItem' && FNEHD_INTERACTION_MODE === 'modal') : ?>
                             <a class="nav-link fnehd-nav-link" id="BtnSettings" data-toggle="modal" data-target="#fnehd-sett-modal">
                         <?php else : ?>
                             <a class="nav-link fnehd-nav-link" 
@@ -50,7 +50,7 @@
                                                 class="nav-link fnehd-nav-link"
                                                 <?php 
                                                 if ($submenu['li-id'] === 'FnehdQuikResDB') {
-                                                    echo (FNEHD_PLUGIN_INTERACTION_MODE === 'modal') 
+                                                    echo (FNEHD_INTERACTION_MODE === 'modal') 
                                                         ? 'data-toggle="modal" data-target="#fnehd-db-restore-modal"' 
                                                         : 'data-toggle="collapse" data-target="#fnehd-db-restore-form-dialog"';
                                                 } 

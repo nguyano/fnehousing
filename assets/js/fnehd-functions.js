@@ -321,6 +321,9 @@ function renderItems(items, page, view = "grid") {
 	const start = (page - 1) * perPage;
 	const end = start + perPage;
 	const shelter_url = jQuery("#fnehd-listing-wrapper").data("shelter-url");
+	const isModal = fnehd.interaction_mode === "modal";
+	const quickUpdateToggle = isModal ? 'modal' : 'collapse';
+	const quickUpdateTarget = isModal ? 'fnehd-shelter-availability-update-modal' : 'fnehd-shelter-availability-update-form-dialog';
 
 	if (view === "grid") {
 		jQuery('#shelter-table-view').hide();
@@ -345,7 +348,7 @@ function renderItems(items, page, view = "grid") {
 							<a href="${shelter_url}&shelter_id=${item.shelter_id}" class="btn btn-outline-primary btn-sm btn-round text-blue hover:text-blue-700">
 								View Details
 							</a>
-							<a href="#" class="btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
+							<a href="#" id="${item.shelter_id}" data-shelter-name="${item.shelter_name}" data-toggle="`+quickUpdateToggle+`" data-target="#`+quickUpdateTarget+`" class="fnehd-quick-update-shelter-btn btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
 								Quick Update
 							</a>
 						</div>
@@ -376,7 +379,7 @@ function renderItems(items, page, view = "grid") {
 							<a href="${shelter_url}&shelter_id=${item.shelter_id}" class="btn btn-outline-primary btn-sm btn-round text-blue hover:text-blue-700">
 								View Details
 							</a>
-							<a href="#" class="btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
+							<a href="#" data-toggle="`+quickUpdateToggle+`" data-target="#`+quickUpdateTarget+`" class="btn btn-outline-success btn-sm btn-round text-blue hover:text-blue-700">
 								Quick Update
 							</a>
 						</div>
@@ -539,7 +542,7 @@ async function initMap() {
     });
 
     const customIcon = {
-        url: fneIconUrl,
+        url: fnehd.fneIconUrl,
         scaledSize: new google.maps.Size(32, 32),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(25, 50)
@@ -577,7 +580,7 @@ async function initMap() {
                                 <h3 class="text-lg font-bold">${listing.shelter_name}</h3>
                                 <p class="text-gray-700">Location: ${listing.address}</p>
                                 <div class="mt-2">
-                                    <a href="`+fneShelterUrl+`&shelter_id=${listing.shelter_id}" class="text-blue-500 hover:text-blue-700">View Details</a>
+                                    <a href="`+fnehd.fneShelterUrl+`&shelter_id=${listing.shelter_id}" class="text-blue-500 hover:text-blue-700">View Details</a>
                                 </div>
                             </div>
                         </div>

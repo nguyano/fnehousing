@@ -688,7 +688,7 @@ function fnehd_light_svg(){
  * @return string Sanitized HTML output for collapsable dialogs.
  */
 function fnehd_callapsable_dialogs(array $dialogs) {
-    if (FNEHD_PLUGIN_INTERACTION_MODE === 'modal') {
+    if (FNEHD_INTERACTION_MODE === 'modal') {
         return '';
     }
 	
@@ -701,7 +701,7 @@ function fnehd_callapsable_dialogs(array $dialogs) {
         $callback_path = !empty($dialog['callback']) ? FNEHD_PLUGIN_PATH . "templates/forms/" . sanitize_file_name($dialog['callback']) : '';
 
         ?>
-        <div class="card shadow-lg mb-3 fnehd-admin-forms collapse" id="<?= $dialog_id; ?>">
+        <div class="card shadow-lg mb-3 fnehd-admin-forms collapse p-3" id="<?= $dialog_id; ?>">
             <div class="card-header">
                 <h3 class="text-dark card-title text-center">
                     <?= $title; ?>
@@ -789,7 +789,7 @@ function fnehd_user_profile_menu() {
 				</a>
 			</li>
 			<li class="nav-item pt-1 menu-item" id="FnehdMapNavItem">
-				<a type="button" class="text-light btn fnehd-calltoaction shadow-lg btn-sm btn-text btn-round btn-outline-info"  <?= (FNEHD_PLUGIN_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-add-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-add-shelter-form-dialog"'; ?> href="#">
+				<a type="button" class="text-light btn fnehd-calltoaction shadow-lg btn-sm btn-text btn-round btn-outline-info"  <?= (FNEHD_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-add-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-add-shelter-form-dialog"'; ?> href="#">
 					<i class="fa-solid fa-house-medical-circle-check fa-xl"></i>
 					<span class="text-capitalize"> <?= __('Add Shelter', 'fnehousing'); ?></span>          
 				</a>

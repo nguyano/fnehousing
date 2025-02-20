@@ -73,8 +73,20 @@ final class FnehdInit {
 			if ( method_exists($service, 'register' ) ) {
 			   
 				$service->register(); 
+				
 			}
 		}
+		
+		//Define Plugin Interaction Mode - intentionally delayed
+		add_action('plugins_loaded', function() {
+			$interactionMode = fnehd_is_front_user() 
+				? FNEHD_PLUGIN_INTERACTION_MODE_FRONTEND 
+				: FNEHD_PLUGIN_INTERACTION_MODE_ADMIN;
+
+			if (!defined('FNEHD_INTERACTION_MODE')) {
+				define('FNEHD_INTERACTION_MODE', $interactionMode);
+			}
+		});
 	}
 	
 

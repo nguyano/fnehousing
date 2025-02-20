@@ -25,7 +25,7 @@ if (!empty($menus)) :
                         <a 
                             class="nav-link fnehd-nav-link <?= ($menu['type'] === 'drop-down') ? 'dropdown-toggle' : ''; ?>"
                             <?php 
-                            if ($menu['li-id'] === 'FnehdSettMenuItem' && FNEHD_PLUGIN_INTERACTION_MODE === "modal") {
+                            if ($menu['li-id'] === 'FnehdSettMenuItem' && FNEHD_INTERACTION_MODE === "modal") {
                                 echo 'id="BtnSettings" data-toggle="modal" data-target="#fnehd-sett-modal"';
                             } elseif ($menu['type'] === 'drop-down') {
                                 echo 'href="#" id="' . esc_attr($menu['collapse-id']) . '" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"';
@@ -46,7 +46,7 @@ if (!empty($menus)) :
                                         href="<?= esc_url($submenu['href']); ?>"
                                         <?php 
                                         if ($submenu['li-id'] === 'FnehdQuikResDB') {
-                                            if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") {
+                                            if (FNEHD_INTERACTION_MODE === "modal") {
                                                 echo 'data-toggle="modal" data-target="#fnehd-db-restore-modal"';
                                             } else {
                                                 echo 'data-toggle="collapse" data-target="#fnehd-db-restore-form-dialog"';

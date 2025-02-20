@@ -54,34 +54,20 @@ function fnehd_single_user_meta($username, $meta_key) {
 }
 
 
-//Check if Dispute Exist
-function fnehd_dispute_exist($dispute_id) {
-	global $wpdb;
-    $sql = "SELECT COUNT(*) FROM {$wpdb->prefix}fnehousing_disputes WHERE dispute_id = %d";
-    $rowCount = $wpdb->get_var($wpdb->prepare($sql, $dispute_id));
-    if($rowCount == 1){
-	   return true;
-    } else {
-	  return false; 
-    }
-}
-
-
 //Get Shelter Data from id
 function fnehd_get_shelter_data($id) {
 	global $wpdb;
     $sql = "SELECT * FROM {$wpdb->prefix}fnehousing_shelters WHERE shelter_id = %d";
-    $row = $wpdb->get_results($wpdb->prepare($sql, $id), ARRAY_A);
-    return $row[0];
+    return $wpdb->get_row($wpdb->prepare($sql, $id), ARRAY_A);
 }
+
 
 
 //Get Shelter Data from Ref_id
 function fnehd_get_shelter_by_ref($ref_id) {
 	global $wpdb;
     $sql = "SELECT * FROM {$wpdb->prefix}fnehousing_shelters WHERE ref_id = %d";
-    $row = $wpdb->get_results($wpdb->prepare($sql, $ref_id), ARRAY_A);
-    return $row[0];
+    return $wpdb->get_row($wpdb->prepare($sql, $ref_id), ARRAY_A);
 }
 
 //Check if Shelter Exist

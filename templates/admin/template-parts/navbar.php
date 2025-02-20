@@ -62,7 +62,7 @@
 
                 <!-- Settings -->
                 <li class="nav-item px-3">
-                    <a href="<?= FNEHD_PLUGIN_INTERACTION_MODE === 'modal' ? 'javascript:;' : esc_url(admin_url('admin.php?page=fnehousing-settings')); ?>" class="nav-link text-body p-0" data-toggle="<?= FNEHD_PLUGIN_INTERACTION_MODE === 'modal' ? 'modal' : ''; ?>" data-target="<?= FNEHD_PLUGIN_INTERACTION_MODE === 'modal' ? '#fnehd-sett-modal' : ''; ?>">
+                    <a href="<?= FNEHD_INTERACTION_MODE === 'modal' ? 'javascript:;' : esc_url(admin_url('admin.php?page=fnehousing-settings')); ?>" class="nav-link text-body p-0" data-toggle="<?= FNEHD_INTERACTION_MODE === 'modal' ? 'modal' : ''; ?>" data-target="<?= FNEHD_INTERACTION_MODE === 'modal' ? '#fnehd-sett-modal' : ''; ?>">
                         <i class="text-light fa fa-screwdriver-wrench fnehd-nav-icon"></i>
                     </a>
                 </li>

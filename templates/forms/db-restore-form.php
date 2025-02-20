@@ -20,7 +20,7 @@
 	   </div><br><br>
 		<button type="submit" class="btn fnehd-btn-primary" id="restoredb">
 		<?= __("Restore DB", "fnehousing"); ?></button>
-		<?php if(FNEHD_PLUGIN_INTERACTION_MODE == "modal"){ ?>
+		<?php if(FNEHD_INTERACTION_MODE == "modal"){ ?>
 		   <button type="button" class="btn btn-default" data-dismiss="modal">
 		   <?= __("Cancel", "fnehousing"); ?></button>
 		<?php } else { ?>

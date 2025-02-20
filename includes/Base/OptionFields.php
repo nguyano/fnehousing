@@ -25,19 +25,6 @@ class OptionFields {
 		
             // General Settings
 			[
-				'id'          =>  'plugin_interaction_mode',
-				'title'       =>  __("Plugin Interaction Mode", "fnehousing"),
-				'callback'    =>  'selectField',
-				'page'        =>  'fnehousing_general',
-				'section'     =>  'fnehd_general_settings',
-				'placeholder' =>  "",
-				'description' =>  __("Choose how users interact with the plugin.", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
-				'icon'        =>  'cog',
-				'default'     =>  'page'
-			],
-
-			[
 				'id'          =>  'access_role',
 				'title'       =>  __("Plugin Access Role", "fnehousing"),
 				'callback'    =>  'selectField',
@@ -45,7 +32,7 @@ class OptionFields {
 				'section'     =>  'fnehd_general_settings',
 				'placeholder' =>  "",
 				'description' =>  __("Choose which other admin user role other than Administrators, has access to the plugin. NB: Administrators are granted access by default. Also, only administrators can alter plugin settings", "fnehousing"),
-				'divclasses'  =>  'col-md-6 p-3 card shadow-lg',
+				'divclasses'  =>  'col-md-4 p-3 card shadow-lg',
 				'icon'        =>  'lock',
 				'default'     =>  'editor'
 			],
@@ -58,7 +45,7 @@ class OptionFields {
 				'section'     =>  'fnehd_general_settings',
 				'placeholder' =>  "",
 				'description' =>  __("Default currency for transactions.", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'money-bill',
 				'default'     =>  'USD'
 			],
@@ -71,7 +58,7 @@ class OptionFields {
 				'section'     =>  'fnehd_general_settings',
 				'placeholder' =>  "",
 				'description' =>  __("Set a default timezone for the plugin (default is: UTC GMT+0:00)", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'clock',
 				'default'     =>  'UTC'
 			],
@@ -382,6 +369,19 @@ class OptionFields {
 
 		    //Admin Styling
 			[
+				'id'          =>  'plugin_interaction_mode_admin',
+				'title'       =>  __("Admin Interaction Mode", "fnehousing"),
+				'callback'    =>  'selectField',
+				'page'        =>  'fnehousing_admin_appearance',
+				'section'     =>  'fnehd_admin_appearance_settings',
+				'placeholder' =>  "",
+				'description' =>  __("Choose interaction mode for admin users (diaglogs/modals)", "fnehousing"),
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
+				'icon'        =>  'cog',
+				'default'     =>  'page'
+			],
+
+			[
 				'id'          =>  'theme_class',
 				'title'       =>  __("Admin Theme Colour Scheme", "fnehousing"),
 				'callback'    =>  'selectField',
@@ -389,7 +389,7 @@ class OptionFields {
 				'section'     =>  'fnehd_admin_appearance_settings',
 				'placeholder' =>  "",
 				'description' =>  __("Choose between light and dark theme colour schemes", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'palette',
 				'default'     =>  'light-edition'
 			],
@@ -402,7 +402,7 @@ class OptionFields {
 				'section'     =>  'fnehd_admin_appearance_settings',
 				'placeholder' =>  "",
 				'description' =>  __("Choose desired admin navigation menu style", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'palette',
 				'default'     =>  'top-menu'
 			],
@@ -433,6 +433,19 @@ class OptionFields {
 				'default'     =>  false
 			],
 
+			//Frontend styling
+			[
+				'id'          =>  'plugin_interaction_mode_frontend',
+				'title'       =>  __("Frontend Interaction Mode", "fnehousing"),
+				'callback'    =>  'selectField',
+				'page'        =>  'fnehousing_public_appearance',
+				'section'     =>  'fnehd_public_appearance_settings',
+				'placeholder' =>  "",
+				'description' =>  __("Choose interaction mode for frontend users (diaglogs/modals).", "fnehousing"),
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
+				'icon'        =>  'cog',
+				'default'     =>  'modal'
+			],
 			[
 				'id'          =>  'primary_color',
 				'title'       =>  __("Primary Frontend Colour", "fnehousing"),
@@ -441,7 +454,7 @@ class OptionFields {
 				'section'     =>  'fnehd_public_appearance_settings',
 				'placeholder' =>  __("Select colour", "fnehousing"),
 				'description' =>  __("Choose a primary colour to match your brand or website", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'code',
 				'default'     =>  '#a60900'
 			],
@@ -454,7 +467,7 @@ class OptionFields {
 				'section'     =>  'fnehd_public_appearance_settings',
 				'placeholder' =>  __("Select colour", "fnehousing"),
 				'description' =>  __("Choose a secondary colour to match your brand or website", "fnehousing"),
-				'divclasses'  =>  'col-md-6 card shadow-lg p-3',
+				'divclasses'  =>  'col-md-4 card shadow-lg p-3',
 				'icon'        =>  'code',
 				'default'     =>  '#3361b5'
 			],

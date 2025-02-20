@@ -96,15 +96,6 @@ class PublicEnqueue {
 			}
 		}
 		
-		
-		$icon_url = FNEHD_PLUGIN_URL . 'assets/img/fnehousing-icon.png'; 
-		$shelter_url = home_url() . '?endpoint=view_shelter';
-
-		wp_add_inline_script('fnehd-pub-js', "
-			var fneShelterUrl = '$shelter_url';
-			var fneIconUrl = '$icon_url';
-			", 'before');
-		
 		wp_enqueue_script(
 			'fnehd-gmap-js', 'https://maps.googleapis.com/maps/api/js?key='.FNEHD_GOOGLE_MAP_API_KEY.'&callback=initMap&libraries=places', 
 			array('jquery'), // Dependencies (jQuery in this case)
@@ -115,6 +106,7 @@ class PublicEnqueue {
         // Localize script parameters
         $params = [
             'ajaxurl'       => admin_url('admin-ajax.php'),
+			'interaction_mode' => FNEHD_INTERACTION_MODE,
             'is_front_user' => fnehd_is_front_user() ? true : false,
 			'all_shelters_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/listings')),
 			'total_shelter_count' => fnehd_shelter_count().__(' results', 'fnehousing'),
@@ -124,6 +116,8 @@ class PublicEnqueue {
 			'unavailable_shelters_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/unavailable-listings')),
 			'shelters_search_rest_url' => esc_url_raw(rest_url(FNEHD_PLUGIN_NAME.'/v1/shelter-search-listings')),
 			'default_shelter_img' => FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp",
+			'fneIconUrl' => FNEHD_PLUGIN_URL . 'assets/img/fnehousing-icon.png',
+			'fneShelterUrl' => home_url() . '?endpoint=view_shelter',
 			'swal'  =>[
 
 				'success' => [

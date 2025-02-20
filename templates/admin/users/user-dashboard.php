@@ -26,7 +26,7 @@
 						<h3 class="fnehd-label"><?= $user_data["first_name"].' '.$user_data["last_name"]; ?> 
 							<span class="h3">
 								<button type="button"  id="<?= $user_data["ID"]; ?>"
-									<?php if(FNEHD_PLUGIN_INTERACTION_MODE == "modal"){ ?>
+									<?php if(FNEHD_INTERACTION_MODE == "modal"){ ?>
 										data-toggle="modal" data-target="#fnehd-edit-user-modal"
 									<?php } else { ?>
 										data-toggle="collapse" data-target="#fnehd-edit-user-form-dialog"

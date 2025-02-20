@@ -57,7 +57,7 @@ $tabs = [
 	
 $custom_sections = ['company_logo', 'smtp', 'user_shelter_email', 'admin_shelter_email', 'labels'];
 	
-if (defined('FNEHD_PLUGIN_INTERACTION_MODE') && FNEHD_PLUGIN_INTERACTION_MODE === 'modal') : 
+if (defined('FNEHD_INTERACTION_MODE') && FNEHD_INTERACTION_MODE === 'modal') : 
 
 ob_start();
 
@@ -182,7 +182,7 @@ ob_start();
 		 <button title="<?= esc_html__("Reset Settings", "fnehousing"); ?>" type="button" class="mr-3 fnehd-reset-settings float-right shadow-lg btn btn-sm btn-outline-danger">
 			<i class="fa fa-shuffle"></i> <span class="d-none d-md-inline"><?= esc_html__("Reset Settings", "fnehousing"); ?></span>
 		</button>
-        <?php if (FNEHD_PLUGIN_INTERACTION_MODE === "modal" && !wp_is_mobile()) : ?>
+        <?php if (FNEHD_INTERACTION_MODE === "modal" && !wp_is_mobile()) : ?>
             <button type="button" class="btn shadow-lg btn btn-sm btn-outline-default float-right" data-dismiss="modal">
                 <?= esc_html__("Close Panel", "fnehousing"); ?>
             </button>

@@ -39,7 +39,7 @@ function fnehd_log_notify_new_shelter($ref_id, $shelter_id) {
 
     $notification = [
         "admin" => [
-            "subject_id" => $subject_id,
+            "subject_id" => $shelter_id,
             "user_id" => $user_id,
             "subject" => __("New Shelter Created, ID: ", "fnehousing") . $shelter_id,
             "message" => __("New Shelter with Ref#", "fnehousing") . " <strong>" . $ref_id. "</strong> " . __("was Added by", "fnehousing") . " <strong>" . $username . "</strong>",

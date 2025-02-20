@@ -21,18 +21,18 @@ $dialogs = [
 		'type' => 'add-form'
 	 ],
 	 [
-		'id'       => 'nehd-shelter-availability-update-form-dialog',
+		'id'       => 'fnehd-shelter-availability-update-form-dialog',
 		'data_id'  => '',
 		'header'   => '',
-		'title'    => __("Update Shelter Availability", "fnehousing"),
-		'callback' => 'quick-shelter-update-form.php',
+		'title'    => __("Update Shelter Availability", "fnehousing") . ' [<span class="small" id="CrtQuickEditShelterName"></span>]',
+		'callback' => 'shelter-availability-update-form.php',
 		'type'     => 'edit-form'
 	],
 	[
 		'id'       => 'fnehd-edit-shelter-form-dialog',
 		'data_id'  => '',
 		'header'   => '',
-		'title'    => __("Update Shelter", "fnehousing"),
+		'title'    => __("Update Shelter", "fnehousing") . ' [<span class="small" id="CrtEditShelterName"></span>]',
 		'callback' => 'edit-shelter-form.php',
 		'type'     => 'edit-form'
 	]

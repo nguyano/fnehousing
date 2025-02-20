@@ -131,7 +131,7 @@ class ShelterSearchDataTable {
         ?>
         <center>
 			<a href="#" id="<?= esc_attr($shelter_id); ?>" class="fnehd-edit-shelter-btn btn btn-info btn-icon-text fnehd-btn-sm"
-			   <?= (FNEHD_PLUGIN_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"'; ?>>
+			   <?= (FNEHD_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"'; ?>>
 				<i class="fas fa-pencil"></i> &nbsp;<?php esc_html_e('Edit', 'fnehousing'); ?>
 			</a>
 			<a href="#" id="<?= esc_attr($shelter_id); ?>" class="btn btn-danger btn-icon-text fnehd-btn-sm fnehd-delete-btn" data-action="fnehd_del_shelter">

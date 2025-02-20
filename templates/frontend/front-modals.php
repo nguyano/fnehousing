@@ -10,8 +10,8 @@
  defined('ABSPATH') || exit;
 
 	
-$modals = array(
-	array(
+$modals = [
+	[
 		"id" => "fnehd-add-shelter-modal",
 		"modal-static" => false,
 		"modal-dialog-class" => "",
@@ -22,117 +22,35 @@ $modals = array(
 		"title" => __("Add Shelter", "fnehousing"),
 		"modal-body-id" => "",
 		"callback" => "add-shelter-form.php"
-	),
-	array(
-		 "id" => "fnehd-milestone-form-modal",
-		 "modal-static" => false,
-		 "modal-dialog-class" => "",
-		 "modal-content-class" => "",
-		 "header-status" => false, "header" => "",
-		 "modal-title-class" => "",
-		 "type" => "",  "icon" => "",
-		 "title" => __("Add Shelter", "fnehousing"),
-		 "modal-body-id" => "",
-		 "callback" => "add-milestone-form.php"
-	),
-	array(
-		 "id" => "fnehd-view-milestone-modal",
-		 "modal-static" => false,
-		 "modal-dialog-class" => "",
-		 "modal-content-class" => "fnehd-modal-sm",
-		 "header-status" => false, "header" => "",
-		 "modal-title-class" => "",
-		 "type" => "",  "icon" => "",
-		 "title" => __("Shelter Milestone Details", "fnehousing"),
-		 "modal-body-id" => "fnehd-view-milestone-modal-body",
-		 "callback" => ""
-	),
-	array(
-		"id" => "fnehd-bitcoin-deposit-form-modal",
+	],
+	[
+		"id" => "fnehd-edit-shelter-modal",
 		"modal-static" => false,
 		"modal-dialog-class" => "",
 		"modal-content-class" => "",
 		"header-status" => false, "header" => "",
 		"modal-title-class" => "",
 		"type" => "",  "icon" => "",
-		"title" => __("User Deposit - Bitcoin", "fnehousing"),
+		"title" => __("Update Shelter", "fnehousing") . ' [<span class="small" id="CrtEditShelterName"></span>]',
 		"modal-body-id" => "",
-		"callback" => "bitcoin-deposit-form.php"
-	),
-	array(
-		"id" => "fnehd-bitcoin-withdraw-form-modal",
+		"callback" => "edit-shelter-form.php"
+	],
+	[
+		"id" => "fnehd-shelter-availability-update-modal",
 		"modal-static" => false,
 		"modal-dialog-class" => "",
 		"modal-content-class" => "",
 		"header-status" => false, "header" => "",
 		"modal-title-class" => "",
 		"type" => "",  "icon" => "",
-		"title" => __("User Withdrawal - Bitcoin", "fnehousing"),
+		"title" => __("Update Shelter Availability", "fnehousing") . ' [<span class="small" id="CrtQuickEditShelterName"></span>]',
 		"modal-body-id" => "",
-		"callback" => "bitcoin-withdrawal-form.php"
-	),
-	array(
-		"id" => "fnehd-paypal-deposit-form-modal",
-		"modal-static" => false,
-		"modal-dialog-class" => "",
-		"modal-content-class" => "",
-		"header-status" => false, "header" => "",
-		"modal-title-class" => "",
-		"type" => "",  "icon" => "",
-		"title" => __("Paypal Deposit", "fnehousing"),
-		"modal-body-id" => "",
-		"callback" => "paypal-deposit-form.php"
-	),
-	array(
-		"id" => "fnehd-paypal-withdraw-form-modal",
-		"modal-static" => false,
-		"modal-dialog-class" => "",
-		"modal-content-class" => "",
-		"header-status" => false, "header" => "",
-		"modal-title-class" => "",
-		"type" => "",  "icon" => "",
-		"title" => __("Paypal Withdrawal", "fnehousing"),
-		"modal-body-id" => "",
-		"callback" => "paypal-withdraw-form.php"
-	),
-	array(
-		"id" => "fnehd-manual-deposit-form-modal",
-		"modal-static" => false,
-		"modal-dialog-class" => "",
-		"modal-content-class" => "",
-		"header-status" => false, "header" => "",
-		"modal-title-class" => "",
-		"type" => "",  "icon" => "",
-		"title" => __("Manual Deposit", "fnehousing"),
-		"modal-body-id" => "",
-		"callback" => "manual-deposit-form.php"
-	),
-	array(
-		"id" => "fnehd-manual-withdraw-form-modal",
-		"modal-static" => false,
-		"modal-dialog-class" => "",
-		"modal-content-class" => "",
-		"header-status" => false, "header" => "",
-		"modal-title-class" => "",
-		"type" => "",  "icon" => "",
-		"title" => __("Manual Withdrawal", "fnehousing"),
-		"modal-body-id" => "",
-		"callback" => "manual-withdraw-form.php"
-	),
-	array(
-		"id" => "fnehd-add-dispute-modal",
-		"modal-static" => false,
-		"modal-dialog-class" => "",
-		"modal-content-class" => "",
-		"header-status" => false, "header" => "",
-		"modal-title-class" => "",
-		"type" => "",  "icon" => "people-arrows",
-		"title" => __("Add Dispute", "fnehousing"),
-		"modal-body-id" => "",
-		"callback" => "add-dispute-form.php"
-	)	
-
-);
+		"callback" => "shelter-availability-update-form.php"
+	]
+	
+	
+	
+];
 
  
 foreach($modals as $modal){ ?> 

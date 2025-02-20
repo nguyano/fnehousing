@@ -77,7 +77,7 @@ class ShelterDataTable {
                 'dt' => 8,
                 'formatter' => function ($d, $row) {
                     return [
-                        'actions' => self::shelterTableAction($d),
+                        'actions' => self::shelterTableAction($d, $row['shelter_name']),
                     ];
                 },
             ],
@@ -106,7 +106,7 @@ class ShelterDataTable {
      * @param int    $shelter_id The shelter ID.
      * @return string HTML string for the action buttons.
      */
-    public static function shelterTableAction($shelter_id) {
+    public static function shelterTableAction($shelter_id, $shelter_name) {
         ob_start();
 
         ?>
@@ -119,8 +119,8 @@ class ShelterDataTable {
                 <a href="<?= $shelter_url; ?>" class="btn fnehd-btn-secondary btn-icon-text fnehd-btn-sm">
                     <i class="fas fa-eye"></i> &nbsp;<?php esc_html_e('View', 'fnehousing'); ?>
                 </a>
-				<a href="#" id="<?= esc_attr($shelter_id); ?>" class="btn btn-info btn-icon-text fnehd-btn-sm"
-				   <?= (FNEHD_PLUGIN_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-shelter-availability-update-modal"' : 'data-toggle="collapse" data-target="#fnehd-shelter-availability-update-form-dialog"'; ?>>
+				<a href="#" id="<?= esc_attr($shelter_id); ?>" data-shelter-name="<?= esc_attr($shelter_name); ?>" class="fnehd-quick-update-shelter-btn btn btn-info btn-icon-text fnehd-btn-sm"
+				   <?= (FNEHD_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-shelter-availability-update-modal"' : 'data-toggle="collapse" data-target="#fnehd-shelter-availability-update-form-dialog"'; ?>>
 					<i class="fas fa-pencil"></i> &nbsp;<?php esc_html_e('Quick updtae', 'fnehousing'); ?>
 				</a>
 				
@@ -130,7 +130,7 @@ class ShelterDataTable {
                 </a>-->
 				
 				<a href="#" id="<?= esc_attr($shelter_id); ?>" class="fnehd-edit-shelter-btn btn btn-info btn-icon-text fnehd-btn-sm"
-				   <?= (FNEHD_PLUGIN_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"'; ?>>
+				   <?= (FNEHD_INTERACTION_MODE === "modal") ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"'; ?>>
 					<i class="fas fa-pencil"></i> &nbsp;<?php esc_html_e('Edit', 'fnehousing'); ?>
 				</a>
                 <a href="#" id="<?= esc_attr($shelter_id); ?>" class="btn btn-danger btn-icon-text fnehd-btn-sm fnehd-delete-btn" data-action="fnehd_del_shelter">

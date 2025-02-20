@@ -359,13 +359,22 @@ class OptionsCallbacks extends OptionFields {
 		$this->renderOptions($options, $selected_value);
 	}
 	
-	public function plugin_interaction_mode_options($selected_value = '') {
+	public function plugin_interaction_mode_admin_options($selected_value = '') {
 		$options = [
 			'page'  => 'Pages & Collapsable Dialogs',
 			'modal' => 'Sleek Modal Popups'
 		];
 		$this->renderOptions($options, $selected_value);
 	}
+	
+	public function plugin_interaction_mode_frontend_options($selected_value = '') {
+		$options = [
+			'page'  => 'Pages & Collapsable Dialogs',
+			'modal' => 'Sleek Modal Popups'
+		];
+		$this->renderOptions($options, $selected_value);
+	}
+	
 	
 	
 	public function access_role_options($selected_value = '') {

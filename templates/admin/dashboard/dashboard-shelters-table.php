@@ -50,7 +50,7 @@ if ($rowCnt > 0) {
 					<div class='dropdown-menu dropdown-menu-right' aria-labelledby='fnehdDropdownShelters'>";
 						 $output .='
 						<a href="#" id="'.esc_attr($shelter['shelter_id']).'" class="fnehd-edit-shelter-btn dropdown-item"
-						   '.(FNEHD_PLUGIN_INTERACTION_MODE === "modal" ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"').'>
+						   '.(FNEHD_INTERACTION_MODE === "modal" ? 'data-toggle="modal" data-target="#fnehd-edit-shelter-modal"' : 'data-toggle="collapse" data-target="#fnehd-edit-shelter-form-dialog"').'>
 							<i class="text-success fas fa-pencil"></i> &nbsp; '.__('Edit', 'fnehousing').'
 						</a>';
 						 $output .="

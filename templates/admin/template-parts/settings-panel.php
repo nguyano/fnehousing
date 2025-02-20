@@ -43,7 +43,7 @@ $dialogs = [
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <!-- Import Settings Button -->
     <button id="impSett" type="button" class="fnehd-btn-sm pr-4 pl-4 pt-3 pb-3 btn btn-icon-text shadow-lg fnehd-btn-white"
-        <?php if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") { ?>
+        <?php if (FNEHD_INTERACTION_MODE === "modal") { ?>
             data-toggle="modal" data-target="#doptions-import"
         <?php } else { ?>
             data-toggle="collapse" data-target="#DisplayOptionsImportForm"

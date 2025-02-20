@@ -61,7 +61,7 @@ $dialogs = [
 
     <!-- Create Milestone Button -->
     <button type="button" class="btn btn-icon-text shadow-lg fnehd-btn-white addShelter"
-        <?php if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") { ?>
+        <?php if (FNEHD_INTERACTION_MODE === "modal") { ?>
             data-toggle="modal" data-target="#fnehd-milestone-form-modal"
         <?php } else { ?>
             data-toggle="collapse" data-target="#fnehd-milestone-form-dialog"

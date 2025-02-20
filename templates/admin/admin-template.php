@@ -81,7 +81,7 @@ include_once FNEHD_PLUGIN_PATH . 'templates/admin/template-parts/sidebar.php'; /
     // Include footer and modals if required.
     include_once FNEHD_PLUGIN_PATH . 'templates/admin/template-parts/footer.php';
 	
-    if ( FNEHD_PLUGIN_INTERACTION_MODE === 'modal' ) {
+    if ( FNEHD_INTERACTION_MODE === 'modal' ) {
         include_once FNEHD_PLUGIN_PATH . 'templates/admin/template-parts/modals.php';
     }
     if ( isset( $IsStatsPage ) && $IsStatsPage ) {

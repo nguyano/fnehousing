@@ -51,7 +51,12 @@ $default_img_url = FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp";
     <div class="fnehd-shelter-main-content border pb-5 col-md-8<?= wp_is_mobile()? ' p-3' : ' p-5'?>">
         <!-- Title Bar -->
         <div class="mb-4 fnehd-shelter-title-bar">
-            <?= $shelter['shelter_name']; ?> <i class="text-success fa fa-check-circle"></i>
+            <?= $shelter['shelter_name']; ?> 
+			<?php if($shelter['availability'] === "Available"): ?>
+				<i title="<?= __('Available', 'fnehousing'); ?>" class="text-success fa fa-check-circle"></i>
+			<?php else: ?>
+			   <i title="<?= __('Not Available', 'fnehousing'); ?>" class="fa-solid fa-circle-xmark text-danger"></i>
+			<?php endif; ?>
 			<button class="d-none d-md-flex contact-button bg-info float-right">
 				<?php esc_html_e('Mark as Referred', 'fnehousing'); ?>
 			</button>
@@ -91,12 +96,12 @@ $default_img_url = FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp";
         <!-- Features -->
         <?php 
         $features = [
-            ['title' => 'Availability', 'value' => $shelter['availability'], 'icon' => 'house-circle-check'],
-			['title' => 'Total Beds', 'value' => $shelter['bed_capacity'], 'icon' => 'bed'],
-            ['title' => 'Available Beds', 'value' => $shelter['available_beds'], 'icon' => 'bed'],
-            ['title' => 'Bathrooms', 'value' => '7', 'icon' => 'bath'],
-            ['title' => 'Wi-Fi', 'value' => 'Available', 'icon' => 'wifi'],
-            ['title' => 'Parking', 'value' => 'Available', 'icon' => 'square-parking'],
+            ['title' => __('Availability', 'fnehousing'), 'value' => $shelter['availability'], 'icon' => 'house-circle-check'],
+			['title' => __('Total Beds', 'fnehousing'), 'value' => $shelter['bed_capacity'], 'icon' => 'bed'],
+            ['title' => __('Available Beds', 'fnehousing'), 'value' => $shelter['available_beds'], 'icon' => 'bed'],
+            ['title' => __('Bathrooms', 'fnehousing'), 'value' => '7', 'icon' => 'bath'],
+            ['title' => __('Wi-Fi', 'fnehousing'), 'value' => 'Available', 'icon' => 'wifi'],
+            ['title' => __('Parking', 'fnehousing'), 'value' => 'Available', 'icon' => 'square-parking'],
         ];
         ?>
         <div class="fnehd-shelter-features">
@@ -131,7 +136,7 @@ $default_img_url = FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp";
     <div class="fnehd-shelter-sidebar border col-md-4 pt-5 p-4">
 		<!-- Availability update form-->
         <h3><?php esc_html_e('Update Shelter Availability', 'fnehousing'); ?></h3>
-        <?php include FNEHD_PLUGIN_PATH."templates/forms/quick-shelter-update-form.php"; ?>
+        <?php include FNEHD_PLUGIN_PATH."templates/forms/shelter-availability-update-form.php"; ?>
 
         <!-- Contact Details -->
         <div class="border p-4 fnehd-contact-details mt-5">
@@ -185,17 +190,17 @@ $default_img_url = FNEHD_PLUGIN_URL."assets/img/fne-default-home.webp";
 				<?php
 				// Define features data
 				$features = [
-					'Gender identity' => ['Females', 'Males', 'Transgender', 'Non-conforming/questioning'],
-					'Accepted Age' => explode(',', $shelter['accepted_ages']),
-					'Pets policy' => [ $shelter['pet_policy'] ],
-					'Accepts clients that…' => explode(',', $shelter['specific_services']),
+					__('Gender identity', 'fnehousing') => [__('Females', 'fnehousing'), __('Males', 'fnehousing'), __('Transgender', 'fnehousing'), __('Non-conforming/questioning', 'fnehousing')],
+					__('Accepted Age', 'fnehousing') => explode(',', $shelter['accepted_ages']),
+					__('Pets policy', 'fnehousing') => [ $shelter['pet_policy'] ],
+					__('Accepts clients that…', 'fnehousing') => explode(',', $shelter['specific_services']),
 				];
 				
 				foreach ($features as $category => $items) {
 					if (!empty($items)) { // Only display if $items is not empty
-						echo '<li><strong>' . esc_html__($category, 'fnehousing') . '</strong></li>';
+						echo '<li><strong>' . $category . '</strong></li>';
 						foreach ($items as $item) {
-							echo '<li><i class="pl-1 text-success fa fa-check-circle"></i>&nbsp; ' . esc_html__($item, 'fnehousing') . '</li>';
+							echo '<li><i class="pl-1 text-success fa fa-check-circle"></i>&nbsp; ' . $item . '</li>';
 						}
 						echo '<br>';
 					}

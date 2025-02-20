@@ -26,7 +26,7 @@ $sections = [
             <button type="submit" class="btn fnehd-btn-primary text-white">
                 <?= $submit_text; ?> 
             </button>
-            <?php if (FNEHD_PLUGIN_INTERACTION_MODE === "modal") : ?>
+            <?php if (FNEHD_INTERACTION_MODE === "modal") : ?>
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     <?php esc_html_e("Cancel", "fnehousing"); ?>
                 </button>

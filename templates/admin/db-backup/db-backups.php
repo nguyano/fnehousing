@@ -14,7 +14,7 @@
 	</div>
 	  
 	<button id="GLotDBRestore" class="btn m-1 float-right shadow-lg fnehd-btn-white" 
-		<?php if(FNEHD_PLUGIN_INTERACTION_MODE == "modal") { ?> data-toggle="modal" data-target="#fnehd-db-restore-modal" 
+		<?php if(FNEHD_INTERACTION_MODE == "modal") { ?> data-toggle="modal" data-target="#fnehd-db-restore-modal" 
 		<?php } else { ?> data-toggle="collapse" data-target="#fnehd-db-restore-form-dialog" <?php } ?> >
 		<i class="fa fa-sync"></i> <?= __("Restore", "fnehousing"); ?> 
 		<span class="d-none d-md-inline"><?= __("Old Backup", "fnehousing"); ?></span> 

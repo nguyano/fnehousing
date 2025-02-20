@@ -104,7 +104,7 @@ $modals = [
         "modal-title-class" => "",
         "type"              => "",
         "icon"              => "",
-        "title"             => __("Update Shelter", "fnehousing"),
+        "title"             => __("Update Shelter", "fnehousing") . ' [<span class="small" id="CrtEditShelterName"></span>]',
         "modal-body-id"     => "",
         "callback"          => "edit-shelter-form.php",
     ],

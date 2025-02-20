@@ -187,7 +187,7 @@ class AdminEnqueue {
 				'wpfold'                     => defined('FNEHD_FOLD_WP_MENU') && FNEHD_FOLD_WP_MENU,
 				'checkUsersMessage'          => esc_html__('Payer and Earner cannot be the same user. Go back!', 'fnehousing'),
 				'home_url'                   => home_url(),
-				'interaction_mode'           => FNEHD_PLUGIN_INTERACTION_MODE,
+				'interaction_mode'           => FNEHD_INTERACTION_MODE,
 				'dbbackup_log_state'         => FNEHD_DBACKUP_LOG,
 				'swal'  =>[
 				

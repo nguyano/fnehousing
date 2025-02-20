@@ -46,7 +46,7 @@ fnehd_callapsable_dialogs($dialogs);
 		$color    = "info"; 
 		$icon     = "house-medical-circle-check"; 
 		$title    = __("Recent Shelters", "fnehousing");
-		if(FNEHD_PLUGIN_INTERACTION_MODE == "modal"){ 
+		if(FNEHD_INTERACTION_MODE == "modal"){ 
 			$subtitle = '<a href="admin.php?page=fnehousing-shelters" class="fnehd-text-info" title="'.__("See All Shelters", "fnehousing").'"> 
 							<i class="fas fnehd-text-info fa-house-chimney-user"></i><span class="d-none d-md-inline">'.__("All Shelters", "fnehousing").'&nbsp;&nbsp;</span> 
 						</a>

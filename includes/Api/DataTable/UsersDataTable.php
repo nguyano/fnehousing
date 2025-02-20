@@ -116,8 +116,8 @@ class UsersDataTable {
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="fnehdDropdownUser">
 				<a href="#" id="<?= $user_id; ?>" class="dropdown-item fnehd-user-edit-btn fnehd-rounded" 
-				data-toggle="<?= FNEHD_PLUGIN_INTERACTION_MODE === 'modal' ? 'modal' : 'collapse'; ?>" 
-				data-target="<?=FNEHD_PLUGIN_INTERACTION_MODE  === 'modal' ? '#fnehd-edit-user-modal' : '#fnehd-edit-user-form-dialog'; ?>">
+				data-toggle="<?= FNEHD_INTERACTION_MODE === 'modal' ? 'modal' : 'collapse'; ?>" 
+				data-target="<?=FNEHD_INTERACTION_MODE  === 'modal' ? '#fnehd-edit-user-modal' : '#fnehd-edit-user-form-dialog'; ?>">
                      <i class="text-info fas fa-user-pen"></i> &nbsp; <?php esc_html_e('Quick Edit', 'fnehousing'); ?>
                 </a>
 					

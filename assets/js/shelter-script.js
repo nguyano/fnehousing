@@ -255,15 +255,17 @@ jQuery(document).ready(function ($) {
                         $("#fnehd-add-shelter-modal").modal("hide");
                         $("#AddShelterForm")[0].reset();
                         $("#fnehd-add-shelter-form-dialog").collapse("hide");
-                        if (urlParams.get("page") === "fnehousing-dashboard") {
-                            fetchRecentShelters();
-                        } else {
-                            reloadShelters();
-                        }
-                        $("html, .fnehd-main-panel").animate(
-                            { scrollTop: $(".fnehd-main-panel").offset().top },
-                            "slow"
-                        );
+						if (!fnehd.is_front_user) {	
+							if (urlParams.get("page") === "fnehousing-dashboard") {
+								fetchRecentShelters();
+							} else {
+								reloadShelters();
+							}
+							$("html, .fnehd-main-panel").animate(
+								{ scrollTop: $(".fnehd-main-panel").offset().top },
+								"slow"
+							);
+						}	
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -306,6 +308,62 @@ jQuery(document).ready(function ($) {
                             { scrollTop: $(".fnehd-main-panel").offset().top },
                             "slow"
                         );
+                    }
+                });
+            }
+        });
+    });
+	
+	// frontend quick updtate button actions
+	$("body").on("click", ".fnehd-quick-update-shelter-btn", function (e) {
+		e.preventDefault();
+		const shelterID = $(this).attr('id');
+		const shelterName = $(this).data('shelter-name');
+		$('#fnehd-quick-update-shelter-id-input').val(shelterID);
+		$('#CrtQuickEditShelterName').text(shelterName);
+		if(fnehd.interaction_mode === 'page'){
+			$("html, .fnehd-main-panel").animate(
+				{ scrollTop: $(".fnehd-main-panel").offset().top },
+				"slow"
+			);
+		}
+	 });	
+	
+	
+	// Update Shelter Availability
+    $("body").on("submit", "#EditShelterAvailabilityForm", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: fnehd.swal.warning.title,
+            text: fnehd.swal.warning.text,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: fnehd.swal.shelter.shelter_update_confirm,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form_data = $(this).serialize();
+                $.post(fnehd.ajaxurl, form_data, function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        });
+                        $("#fnehd-edit-shelter-modal").modal("hide");
+                        $("#fnehd-edit-shelter-form-dialog").collapse("hide");
+						$("#EditShelterAvailabilityForm")[0].reset();
+						if (fnehd.is_front_user) {
+							location.reload();
+						} else {	
+							reloadShelters();
+							$("html, .fnehd-main-panel").animate(
+								{ scrollTop: $(".fnehd-main-panel").offset().top },
+								"slow"
+							);
+						}
                     }
                 });
             }
@@ -372,7 +430,7 @@ jQuery(document).ready(function ($) {
 			});
 
 			// Update the form title with the current user email
-			$("#CrtEditShelterID").html(response.data.shelter_name);
+			$("#CrtEditShelterName").html(response.data.shelter_name);
 
 			// display available main image
 			let imagePath = response.data.main_image;

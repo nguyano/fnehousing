@@ -30,6 +30,7 @@ class SheltersActions extends ShelterDBManager {
             'fnehd_reload_shelter_tbl' => 'actionReloadShelters',
             'fnehd_insert_shelter' => 'actionInsertShelter',
 			'fnehd_update_shelter' => 'actionUpdateShelter',
+			'fnehd_update_shelter_availability' => 'actionUpdateShelterAvailability',
             'fnehd_shelter_data' => 'actionGetShelterDataById',
             'fnehd_del_shelter' => 'actionDeleteShelter',
             'fnehd_del_shelters' => 'actionDeleteShelters',
@@ -49,6 +50,8 @@ class SheltersActions extends ShelterDBManager {
 
         // Register specific public-facing AJAX actions.
         add_action('wp_ajax_nopriv_fnehd_insert_shelter', [$this, 'actionInsertShelter']);
+		add_action('wp_ajax_nopriv_fnehd_update_shelter', [$this, 'actionUpdateShelter']);
+		add_action('wp_ajax_nopriv_fnehd_update_shelter_availability', [$this, 'actionUpdateShelterAvailability']);
 
         // Custom hooks for logging activity.
         add_action('fnehd_log_activity', [$this, 'logActivity']);
@@ -161,12 +164,12 @@ class SheltersActions extends ShelterDBManager {
 			
 		
 		// Send success response.
-		wp_send_json_success(['message' => __('Shelter added successfully', 'fnehousing'), 'shelter_id' => $this->getLastInsertedShelterID(), 'data' => $data['eligible_individuals']]);
+		wp_send_json_success(['message' => __('Shelter added successfully', 'fnehousing'), 'shelter_id' => $this->getLastInsertedShelterID(), 'redirect_text' => __('View Shelter', 'fnehousing')]);
 	}
 
 
 	/**
-	 * Add a new shelter entry.
+	 * Update shelter availability.
 	 */
 	public function actionUpdateShelter() {
 		// Verify the nonce for security.
@@ -194,6 +197,25 @@ class SheltersActions extends ShelterDBManager {
 		// Send success response.
 		wp_send_json_success(['message' => __('Shelter updated successfully', 'fnehousing')]);
 	}
+	
+	
+		/**
+		 * Update shelter availability.
+		 */
+		public function actionUpdateShelterAvailability() {
+			// Verify the nonce for security.
+			fnehd_validate_ajax_nonce('fnehd_shelter_availability_update_nonce', 'nonce');
+
+			// Sanitize and prepare form data.
+			$form_fields = ['shelter_id', 'availability', 'available_beds'];
+			$data = fnehd_sanitize_form_data($form_fields);
+
+			// Update shelter data.
+			$this->updateData($this->tables->shelters, $data, ['shelter_id' => $data['shelter_id']]);
+			
+			// Send success response.
+			wp_send_json_success(['message' => __('Shelter updated successfully', 'fnehousing')]);
+		}
 	
 	
 	  /**
@@ -267,7 +289,7 @@ class SheltersActions extends ShelterDBManager {
 	   if(isset($_POST['meta_id'])) {
 		 $shelter_id = $_POST['meta_id'];
 		 $detail = $this->getMetaById($shelter_id)['details'];
-		 wp_send_json(['data' => $detail, 'mode' => FNEHD_PLUGIN_INTERACTION_MODE]);
+		 wp_send_json(['data' => $detail, 'mode' => FNEHD_INTERACTION_MODE]);
 	  }
 	}
    

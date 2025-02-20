@@ -38,7 +38,7 @@ $dialogs = [
 
     <!-- Add User Button -->
     <button type="button" class="btn btn-icon-text shadow-lg fnehd-btn-white" 
-        <?php if (FNEHD_PLUGIN_INTERACTION_MODE == "modal") { ?>
+        <?php if (FNEHD_INTERACTION_MODE == "modal") { ?>
             data-toggle="modal" data-target="#fnehd-add-user-modal" 
         <?php } else { ?>
             data-toggle="collapse" data-target="#fnehd-add-user-form-dialog" 
