@@ -91,4 +91,4 @@ if($front_role === 'shelter-manager'){ ?>
 	<?php include FNEHD_PLUGIN_PATH."templates/shelters/shelters-table.php"; ?>
 </div> 
 
-<?php } echo FNEHD_INTERACTION_MODE; ?>
+<?php } ?>
